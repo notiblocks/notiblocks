@@ -141,9 +141,12 @@ class BGColors(Enum):
     bright_cyan =       BG_BRIGHT_CYAN
     bright_white =      BG_BRIGHT_WHITE
 
-#TODO: Time stamps as enum
+class TimeStampFormats(Enum):
+    pass # TODO: https://pynative.com/python-timestamp/
 
-#TODO: Document, Underlined
+#   TODO: Changable braces
+#   TODO: Time stamps as enum
+#   TODO: Document, Underlined
 
 
 class InvalidFormatError(RuntimeError):
