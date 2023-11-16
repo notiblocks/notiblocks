@@ -10,12 +10,9 @@
 # Easy and colorful terminal notifications for logs and debugging
 #                  -- Deyan Sirakov @ 2023 --
 
-# TODO: time format
-
 # imports
 from enum import Enum
 from datetime import datetime
-import calendar
 import time
 
 # ANSI 
@@ -34,6 +31,26 @@ class Brackets(Enum):
     CURLY = 2
     ANGLE = 3
     ROUND = 4
+
+class TimeStampFormats(Enum):
+    """
+    Date and time enumeration for indexing the correct timestamp to be used in the `logs`
+
+    Possible options (case insensitive, you can also separate them by white space):
+        * DATE_AND_TIME ->                  @example  2021-07-03 16:21:12
+        * DATE_AND_TIME_DOT_SEPARATION ->   @example 2021.07.03 16:21:12
+        * TIME          ->                  @example  12:51:32
+        * DATE          ->                  @example  03 July, 2023
+        * TIME_EXPLICIT ->                  @example  04PM 21:12 (HH:MM:SS)
+
+    NOTE: You can add custom timestamps yourself by putting an annotation 
+    and then the timestamp value. For example, instead of "TIME_EXPLICIT" you can write "@%I%p %M:%S".
+    """
+    DATE_AND_TIME = 1
+    DATE_AND_TIME_DOT_SEPARATION = 2
+    TIME = 3
+    DATE = 4
+    TIME_EXPLICIT = 5
 
 # ANSI COLORS
 RESET_STYLE = "\033[0m"
@@ -92,7 +109,7 @@ DEFAULT_TIME_BRACKET_COLOR = "blue"
 DEFAULT_WARN_SIGN = "!"
 DEFAULT_FAIL_SIGN = "-"
 DEFAULT_SUCCESS_SIGN = "+"
-DEFAULT_TIME_SIGN = "%H:%M:%S"
+DEFAULT_TIME_SIGN = "TIME"
 
 DEFAULT_WARN_BACKGROUND_COLOR = None
 DEFAULT_FAIL_BACKGROUND_COLOR = None
@@ -104,6 +121,10 @@ DEFAULT_IS_UNDERLINED = False
 
 
 class FGColors(Enum):
+    """
+    Enumeration, that stores the ANSI codes for the text styling values, 
+    that are being used and implemented in the most of the terminal emulators
+    """
     reset =             FG_RESET
     black =             FG_BLACK
     red =               FG_RED
@@ -123,6 +144,10 @@ class FGColors(Enum):
     bright_white =      FG_BRIGHT_WHITE
 
 class BGColors(Enum):
+    """
+    Enumeration, that stores the ANSI codes for the background values, 
+    that are being used and implemented in the most of the terminal emulators
+    """
     reset =             BG_RESET
     black =             BG_BLACK
     red =               BG_RED
@@ -141,20 +166,16 @@ class BGColors(Enum):
     bright_cyan =       BG_BRIGHT_CYAN
     bright_white =      BG_BRIGHT_WHITE
 
-class TimeStampFormats(Enum):
-    pass # TODO: https://pynative.com/python-timestamp/
-
 #   TODO: Changable braces
-#   TODO: Time stamps as enum
 #   TODO: Document, Underlined
-
+#   TODO: Configuration files
 
 class InvalidFormatError(RuntimeError):
     """
-    Exception, which is throwed when the format you provided is not supported
+    Exception, which is throwed when the format you provided is not supported.
 
     How to debug:
-        check the parameters you provided to the @NBConfig, there should be a wrong value, which is not getting indicated by the program.
+        @Check the parameters you provided to the @NBConfig, there should be a wrong value, which is not getting indicated by the program.
     """
     def __init__(self, message):
         self._message = message
@@ -168,33 +189,33 @@ class NBConfig:
     This class is used to store the configuration details for the NotiBlock handler.
 
     Attributes:
-        warn_color              (str): Color of the warning sign exterior                       @default -> yellow
-        fail_color              (str): Color of the failure sign exterior                       @default -> red
-        success_color           (str): Color of the success sign exterior                       @default -> green
-        time_color              (str): Color of the time stamp sign exterior                    @default -> blue 
+        warn_color              (str): Color of the warning sign exterior                                   @default -> yellow
+        fail_color              (str): Color of the failure sign exterior                                   @default -> red
+        success_color           (str): Color of the success sign exterior                                   @default -> green
+        time_color              (str): Color of the time stamp sign exterior                                @default -> blue 
 
-        warn_bracket_color      (str): Color of the brackets around the warn sign               @default -> yellow
-        fail_bracket_color      (str): Color of the brackets around the fail sign               @default -> red
-        success_bracket_color   (str): Color of the brackets around the success sign            @default -> green
-        time_bracket_color      (str): Color of the brackets around the time sign               @default -> blue
+        warn_bracket_color      (str): Color of the brackets around the warn sign                           @default -> yellow
+        fail_bracket_color      (str): Color of the brackets around the fail sign                           @default -> red
+        success_bracket_color   (str): Color of the brackets around the success sign                        @default -> green
+        time_bracket_color      (str): Color of the brackets around the time sign                           @default -> blue
         
-        warn_sign_color         (str): Color of the warning sign                                @default -> white
-        fail_sign_color         (str): Color of the failure sign                                @default -> yellow
-        success_sign_color      (str): Color of the success sign                                @default -> blue
-        time_sign_color         (str): Color of the time stamp sign                             @default -> gray
+        warn_sign_color         (str): Color of the warning sign                                            @default -> white
+        fail_sign_color         (str): Color of the failure sign                                            @default -> yellow
+        success_sign_color      (str): Color of the success sign                                            @default -> blue
+        time_sign_color         (str): Color of the time stamp sign                                         @default -> gray
 
-        warn_sign               (str): The sign, which stays in between the warn braces         @default -> "!"
-        fail_sign               (str): The sign, which stays in between the fail braces         @default -> "-"
-        success_sign            (str): The sign, which stays in between the success braces      @default -> "+"
-        time_sign_stamp         (str): Time stamp instead of sign, for between the braces       @default -> ss:mm:hh   
+        warn_sign               (str): The sign, which stays in between the warn braces                     @default -> "!"
+        fail_sign               (str): The sign, which stays in between the fail braces                     @default -> "-"
+        success_sign            (str): The sign, which stays in between the success braces                  @default -> "+"
+        time_sign_stamp         (str): Time stamp instead of sign, for between the braces                   @default -> ss:mm:hh   
 
-        warn_background_color   (str): The background behind the warn sigh                      @default -> None
-        fail_background_color   (str): The background behind the fail sigh                      @default -> None
-        success_background_color(str): The background behind the success sigh                   @default -> None
-        time_background_color   (str):The background behind the time sigh                       @default -> None
+        warn_background_color   (str): The background behind the warn sigh                                  @default -> None
+        fail_background_color   (str): The background behind the fail sigh                                  @default -> None
+        success_background_color(str): The background behind the success sigh                               @default -> None
+        time_background_color   (str):The background behind the time sigh                                   @default -> None
 
-        is_underlined           (bool): Is the sign underlined?                                 @default -> False
-        bracket_style           (Brackets): Type of brackets to be used around the sign         @default -> SQUARE
+        is_underlined           (bool): Is the sign underlined?                                             @default -> False
+        bracket_style           (Brackets): Type of brackets to be used around the sign                     @default -> SQUARE
                 (styles: SQUARE, CURLY, ANGLE, ROUND)
 
     Supported colors:
@@ -422,7 +443,6 @@ class NBConfig:
         def time_sign_stamp(self, value: str):
             self._time_sign_stamp = value.lower().strip()
 
-
         @warn_background_color.setter
         def warn_background_color(self, value: str):
             self._warn_background_color = value.lower().strip()
@@ -484,7 +504,7 @@ class NBHandler:
         else:
             raise InvalidFormatError("Invalid format!")
             
-    def sucess(self, message) -> str:
+    def success(self, message) -> str:
         try:
             return self.format_message( self.configuration._success_color,
                                         self.configuration._success_sign_color,
@@ -525,22 +545,46 @@ class NBHandler:
         text_color =        self.configuration._time_color
         sign_color =        self.configuration._time_sign_color
         bracket_color =     self.configuration._time_bracket_color
-        time_stamp =        self.configuration._time_sign_stamp
+        time_stamp_ext =    self.configuration._time_sign_stamp
         background_color =  self.configuration._time_background_color
 
         background_color_value = None
+        time_stamp_value = None
 
         if text_color and sign_color and bracket_color in FGColors.__members__:
             text_color_value =          FGColors[text_color].value
             sign_color_value =          FGColors[sign_color].value
             bracket_color_value =       FGColors[bracket_color].value
             background_color_value =    BGColors.reset.value
-            
+            time_stamp_value =          "%H:%M:%S" # Fallback
+
+            time_stamp_as_string = '_'.join(time_stamp_ext.split(' ')).upper()
+
+            time_stamp = TimeStampFormats[time_stamp_as_string]
+
+            if time_stamp == TimeStampFormats.DATE:
+                time_stamp_value = "%d %B, %Y"
+            elif time_stamp == TimeStampFormats.DATE_AND_TIME:
+                time_stamp_value = "%d-%m-%Y %H:%M:%S"
+            elif time_stamp == TimeStampFormats.TIME:
+                time_stamp_value = "%H:%M:%S"
+            elif time_stamp == TimeStampFormats.TIME_EXPLICIT:
+                time_stamp_value = "%I%p %M:%S"
+            elif time_stamp == TimeStampFormats.DATE_AND_TIME_DOT_SEPARATION:
+                time_stamp_value = "%d.%m.%Y %H:%M:%S"
+            elif time_stamp is None and time_stamp_as_string[0] == "@":
+                time_stamp_as_string = time_stamp_as_string[1::]
+
+                try:
+                    date_time.strftime(time_stamp_as_string)
+                except:
+                    raise InvalidFormatError("The provided date time format is invalid")
+
             if not background_color is None:
                 background_color_value = BGColors[background_color].value
                 out += f"{ANSI.background(background_color_value)}"
 
-            out += f"{ANSI.color_text(bracket_color_value)}[{ANSI.color_text(sign_color_value) + date_time.strftime(time_stamp) + ANSI.color_text(bracket_color_value)}] {ANSI.color_text(text_color_value)}{message}"
+            out += f"{ANSI.color_text(bracket_color_value)}[{ANSI.color_text(sign_color_value) + date_time.strftime(time_stamp_value) + ANSI.color_text(bracket_color_value)}] {ANSI.color_text(text_color_value)}{message}"
             out += f"{RESET_STYLE}"
 
             return out

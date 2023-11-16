@@ -1,5 +1,6 @@
 import time
 import random
+import notiblocks as nb
 from notiblocks import NBConfig, NBHandler
 
 # METHODS
@@ -10,12 +11,13 @@ def main():
         success_sign_color="blue",
         time_sign_color="red",
         success_sign="SUCCESS",
-        success_bracket_color="can" # Wrong, should throw an exception
+        success_bracket_color="cyan",
+        time_sign_stamp="DATE"
     )
 
     nb_handler = NBHandler(nb_conf)
 
-    print(nb_handler.sucess("This is a successful message"))
+    print(nb_handler.success("This is a successful message"))
     print(nb_handler.fail("And this is a failed message"))
     print(nb_handler.warn("But this is a warning message"))
     print(nb_handler.log("This is a logged message."))
