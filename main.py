@@ -8,7 +8,7 @@ def main():
         success_sign_color="blue",
         time_sign_color="red",
         success_sign="SUCCESS",
-        success_bracket_color="magenta"
+        success_bracket_color="cyan"
     )
 
     nb_handler = NBHandler(nb_conf)

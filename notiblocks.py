@@ -454,7 +454,7 @@ class NBHandler:
             text_color_value =          FGColors[text_color].value
             sign_color_value =          FGColors[sign_color].value
             bracket_color_value =       FGColors[bracket_color].value
-            bracket_color_value =       BGColors.reset.value
+            background_color_value =    BGColors.reset.value
 
             if not background_color is None:
                 background_color_value = BGColors[background_color].value
@@ -475,7 +475,6 @@ class NBHandler:
                                     self.configuration._success_sign, 
                                     self.configuration._success_background_color,
                                     message=message)
-
 
     def warn(self, message) -> str:
         return self.format_message( self.configuration._warn_color,
@@ -510,7 +509,7 @@ class NBHandler:
             text_color_value =          FGColors[text_color].value
             sign_color_value =          FGColors[sign_color].value
             bracket_color_value =       FGColors[bracket_color].value
-            bracket_color_value =       BGColors.reset.value
+            background_color_value =    BGColors.reset.value
             
             if not background_color is None:
                 background_color_value = BGColors[background_color].value
