@@ -143,7 +143,21 @@ class BGColors(Enum):
 
 #TODO: Time stamps as enum
 
-#TODO: Document, Add Background and Underlined
+#TODO: Document, Underlined
+
+
+class InvalidFormatError(RuntimeError):
+    """
+    Exception, which is throwed when the format you provided is not supported
+
+    How to debug:
+        check the parameters you provided to the @NBConfig, there should be a wrong value, which is not getting indicated by the program.
+    """
+    def __init__(self, message):
+        self._message = message
+
+    def __str__(self) -> str:
+        return f"{ANSI.background(BG_RED)}{ANSI.color_text(FG_YELLOW)}[{ANSI.color_text(FG_WHITE)}EXCEPTION{ANSI.color_text(FG_YELLOW)}]{ANSI.color_text(FG_WHITE)}{self._message}{RESET_STYLE}"
 
 class NBConfig:
     """
@@ -465,33 +479,41 @@ class NBHandler:
 
             return out
         else:
-            # TODO: Make it exception
-            return ANSI.background(BG_RED) + ANSI.color_text(FG_WHITE)  + f"[!!!] Invalid success color configuration!" + ANSI.background(BG_RESET) + RESET_STYLE
+            raise InvalidFormatError("Invalid format!")
             
     def sucess(self, message) -> str:
-        return self.format_message( self.configuration._success_color,
-                                    self.configuration._success_sign_color,
-                                    self.configuration._success_bracket_color,
-                                    self.configuration._success_sign, 
-                                    self.configuration._success_background_color,
-                                    message=message)
+        try:
+            return self.format_message( self.configuration._success_color,
+                                        self.configuration._success_sign_color,
+                                        self.configuration._success_bracket_color,
+                                        self.configuration._success_sign, 
+                                        self.configuration._success_background_color,
+                                        message=message)
+        except InvalidFormatError as ie:
+            print(ie)
 
     def warn(self, message) -> str:
-        return self.format_message( self.configuration._warn_color,
-                                    self.configuration._warn_sign_color,
-                                    self.configuration._warn_bracket_color,
-                                    self.configuration._warn_sign,
-                                    self.configuration._warn_background_color,
-                                    message=message)
+        try:
+            return self.format_message( self.configuration._warn_color,
+                                        self.configuration._warn_sign_color,
+                                        self.configuration._warn_bracket_color,
+                                        self.configuration._warn_sign,
+                                        self.configuration._warn_background_color,
+                                        message=message)
+        except InvalidFormatError as ie:
+            print(ie)
 
     def fail(self, message) -> str:
-        return self.format_message( self.configuration._fail_color,
-                                    self.configuration._fail_sign_color,
-                                    self.configuration._fail_bracket_color,
-                                    self.configuration._fail_sign, 
-                                    self.configuration._fail_background_color,
-                                    message=message)
-    
+        try:
+            return self.format_message( self.configuration._fail_color,
+                                        self.configuration._fail_sign_color,
+                                        self.configuration._fail_bracket_color,
+                                        self.configuration._fail_sign, 
+                                        self.configuration._fail_background_color,
+                                        message=message)
+        except InvalidFormatError as ie:
+            print(ie)
+
     def log(self, message) -> str:
         out = ""
         current_time = time.time()
@@ -520,5 +542,5 @@ class NBHandler:
 
             return out
         else:
-            # TODO: Make it exception
-            return ANSI.background(BG_RED) + ANSI.color_text(FG_WHITE)  + f"[!!!] Invalid success color configuration!" + ANSI.background(BG_RESET) + RESET_STYLE
+            raise InvalidFormatError("Invalid time format")
+            
