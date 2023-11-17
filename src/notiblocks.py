@@ -610,10 +610,12 @@ class NBHandler:
         # TODO: line parsing?
 
         # @{%RESET%}
+        has_format = False
         message_ptr = 0
         format_contents = []
         while message_ptr < len(message):
             if message[message_ptr] == '@' and message[message_ptr + 1] == '{' and message[message_ptr + 2] == '%':
+                has_format = True
                 format_holder = PosHolder()
                 format_holder.format_type = ""
                 format_holder.start_pos = message_ptr
@@ -630,19 +632,38 @@ class NBHandler:
                 format_contents.append(format_holder)
             else: # No expression, so we move the iterator
                 message_ptr += 1
+
+        # This is a @{%TEST%} message
+        # ['This is a', '@{%TEST%} successful message']
         
-        for x in format_contents:
-            print("Format", x.format_type)
-            print("Start:", x.start_pos)
-            print("End", x.end_pos)
+        if has_format:
+            message_token_pointer = 0
+            message_tokens = message.split("@")
+            formatted_tokens = []
+            for token in message_tokens: # Iterate over all of the message tokens
+                if token[0] == '{' and token[1] == '%': # Check if we are at the right content
+                    current_format = format_contents[message_token_pointer]
+
+                    end_length = current_format.end_pos - current_format.start_pos
+                    token = token[end_length::]
+                    message_token_pointer += 1    
+
+                    # TODO: Apply the format
+                    # 1. Create a new ANSI object
+                    # 2. Find the formating that is needed
+                    # 3. Map and apply the formatting
+                    # 4. Add the format as a string
+                    # 5. put the stirng in the tokens
+
+
+                token = token.strip()
+                formatted_tokens.append(token)
+
+            message = " ".join(formatted_tokens)
+            print(message)
 
         # TODO: Apply formating where needed
-
-        # To apply formats
-        # 1. Split the message in different parts
-        # 2. Use a stringbuilder and after each part concatenate the formatting
-        # 3. override the "message"
-        # 4. directly use the ANSI class to do so, do not override later
+        # TODO: Add time as a format :D
 
         text_color =        text_c.lower().strip() if text_c is not None else None
         sign_color =        sign_c.lower().strip() if sign_c is not None else None
