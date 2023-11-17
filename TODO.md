@@ -1,5 +1,8 @@
 # Project Completion Checklist
 
+## Font Effects
+- [ ] Implement all font effects
+
 ## Underlining
 - [ ] **Underlining Functionality**
     - [ ] Implement general underlining feature
