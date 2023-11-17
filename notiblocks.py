@@ -18,7 +18,7 @@
 #   TODO: Document, Underlined
 #   TODO: Configuration files
 
-# imports
+### IMPORTS
 from enum import Enum
 from datetime import datetime
 import time
@@ -535,17 +535,15 @@ class NBHandler:
     def format_message(self, text_c, sign_c, bracket_c, sign, background_c, bracket_t, message):
         out = ""
 
-        text_color =        text_c
-        sign_color =        sign_c
-        bracket_color =     bracket_c
+        text_color =        text_c.lower().strip() if text_c is not None else None
+        sign_color =        sign_c.lower().strip() if sign_c is not None else None
+        bracket_color =     bracket_c.lower().strip() if bracket_c is not None else None
         sign =              sign
-        background_color =  background_c
+        background_color =  background_c.lower().strip() if background_c is not None else None
 
-        bracket_type_str =  bracket_t # str
+        bracket_type_str =  bracket_t.upper().strip() if bracket_t is not None else None # str
         opening_bracket = '['
         closing_bracket = ']'
-
-        bracket_type_str = bracket_type_str.upper().strip() # Format the bracket type correctly
 
         bracket_type = Brackets[bracket_type_str] # Bracket
 
@@ -635,11 +633,11 @@ class NBHandler:
         current_time = time.time()
         date_time = datetime.fromtimestamp(current_time)
 
-        text_color =        self.configuration._time_color
-        sign_color =        self.configuration._time_sign_color
-        bracket_color =     self.configuration._time_bracket_color
+        text_color =        self.configuration._time_color.lower().strip() if self.configuration._time_color is not None else None
+        sign_color =        self.configuration._time_sign_color.lower().strip() if self.configuration._time_sign_color is not None else None
+        bracket_color =     self.configuration._time_bracket_color.lower().strip() if self.configuration._time_bracket_color is not None else None
         time_stamp_ext =    self.configuration._time_sign_stamp
-        background_color =  self.configuration._time_background_color
+        background_color =  self.configuration._time_background_color.lower().strip() if self.configuration._time_background_color is not None else None
 
         bracket_type_str =  bracket_sign = self.configuration._time_bracket_sign if self.configuration._time_bracket_sign is not None else self.configuration._bracket_style
         opening_bracket = '['
@@ -712,3 +710,4 @@ class NBHandler:
         else:
             raise InvalidFormatError("Invalid time format")
             
+# FAILSON: time_sign_color="GrEEn"

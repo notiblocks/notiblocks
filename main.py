@@ -9,7 +9,7 @@ def main():
     
     nb_conf = NBConfig(
         success_sign_color="blue",
-        time_sign_color="red",
+        time_sign_color="GrEEn",
         success_sign="SUCCESS",
         success_bracket_color="cyan",
         time_sign_stamp="DATE",
