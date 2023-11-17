@@ -10,13 +10,11 @@
 # Easy and colorful terminal notifications for logs and debugging
 #                  -- Deyan Sirakov @ 2023 --
 
-#   TODO: Changable braces
-
 #   TODO: Reformat the names
-#   TODO: No time colors?
 #   TODO: Repeating code in the logs 
 #   TODO: Document, Underlined
 #   TODO: Configuration files
+#   TODO: Intext backgrounds and underlining
 
 ### IMPORTS
 from enum import Enum
