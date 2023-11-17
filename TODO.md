@@ -1,36 +1,48 @@
-# What I have to do to finish the project
-There is not much work left, but it would be nice to keep in mind what I need to do. :D
+# Project Completion Checklist
 
-[ ] Underlining
-    * There is no underlining yet
-    [ ] Underlining for each specific type
+## Underlining
+- [ ] **Underlining Functionality**
+    - [ ] Implement general underlining feature
+    - [ ] Define underlining for each specific type
 
-[ ] Inline templates.
-    * In text templates for background color and styling
-    [ ] Finding the tokens
-    [ ] Replacing the tokens
-    [ ] Formatting the output
+## Inline Templates
+- [ ] **Template Integration**
+    - [ ] Locate tokens in the text
+    - [ ] Replace identified tokens
+    - [ ] Format the output text with templates
 
-[ ] Refactor the code
-    * Make the code as readable as possible before commiting
-    [ ] Extract more methods from the logs 
-    [ ] Reformat names - more readable and understandable names
+## Code Refactoring
+- [ ] **Enhance Code Readability**
+    - [ ] Refactor for readability before committing
+    - [ ] Extract additional methods from logs
+    - [ ] Improve naming conventions for better understanding
 
-[ ] Configuration files
-    * Make specific configuration files, that you can put at the root of the project and use them as configurations
-    [ ] Configuration files as templates
-    [ ] Configuration files as configs  
+## Configuration Files
+- [ ] **Config Centralization**
+    - [ ] Develop specific configuration files for project settings
+    - [ ] Use configuration files as templates
+    - [ ] Implement configuration files for various settings
 
-[ ] QA
-    * Make unit tests, so it is easier to maintain the project as safe as possible
-    [ ] By hand testing
-    [ ] Unit testing  
+## Quality Assurance (QA)
+- [ ] **Ensure Code Integrity**
+    - [ ] Create unit tests for improved project maintenance
+    - [ ] Perform manual testing
+    - [ ] Execute comprehensive unit tests
 
-[ ] Documentation
-    * You should document everything, so the users could understand the library easier.
-    [ ] Comment documentation
-    [ ] Real documentation
+## Documentation
+- [ ] **Thorough Documentation**
+    - [ ] Document all aspects for user understanding
+    - [ ] Include inline comments for code documentation
+    - [ ] Create comprehensive user documentation
 
-[ ] Upload into pip
-    * Put the project in pip, so everybody could use it
-    [ ] Done? - Probably would never maintain it xd
+## Pip Deployment
+- [ ] **Publish on Pip**
+    - [ ] Prepare the project for distribution on Pip
+    - [ ] Confirm successful deployment
+    - [ ] Consider long-term maintenance strategies
+
+## Project Maintenance
+- [ ] **Maintenance Consideration**
+    - [ ] Ensure project is maintainable for future updates and enhancements
+
+(*Note: I would probably never maintain it :D*)
