@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 #         )    )        (        (       )           ) (     
 #      ( /( ( /(   *   ))\ )  (  )\ ) ( /(   (    ( /( )\ )  
 #      )\()))\())` )  /(()/(( )\(()/( )\())  )\   )\()|()/(  
@@ -635,6 +637,12 @@ class NBHandler:
             print("End", x.end_pos)
 
         # TODO: Apply formating where needed
+
+        # To apply formats
+        # 1. Split the message in different parts
+        # 2. Use a stringbuilder and after each part concatenate the formatting
+        # 3. override the "message"
+        # 4. directly use the ANSI class to do so, do not override later
 
         text_color =        text_c.lower().strip() if text_c is not None else None
         sign_color =        sign_c.lower().strip() if sign_c is not None else None
