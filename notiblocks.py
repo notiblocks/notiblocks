@@ -12,7 +12,6 @@
 
 #   TODO: Changable braces
 
-# TODO: Braces styles are not for a single object, bozo
 #   TODO: Reformat the names
 #   TODO: No time colors?
 #   TODO: Repeating code in the logs 
@@ -120,6 +119,11 @@ DEFAULT_FAIL_SIGN = "-"
 DEFAULT_SUCCESS_SIGN = "+"
 DEFAULT_TIME_SIGN = "TIME"
 
+DEFAULT_WARN_BRACKET_SIGN = None
+DEFAULT_FAIL_BRACKET_SIGN = None
+DEFAULT_SUCCESS_BRACKET_SIGN = None
+DEFAULT_TIME_BRACKET_SIGN = None
+
 DEFAULT_WARN_BACKGROUND_COLOR = None
 DEFAULT_FAIL_BACKGROUND_COLOR = None
 DEFAULT_SUCCESS_BACKGROUND_COLOR = None
@@ -204,6 +208,11 @@ class NBConfig:
         success_bracket_color   (str): Color of the brackets around the success sign                        @default -> green
         time_bracket_color      (str): Color of the brackets around the time sign                           @default -> blue
         
+        warn_bracket_sign       (str): Bracket style, which is going to be applied on warning               @default -> None
+        fail_bracket_sign       (str): Bracket style, which is going to be applied on failure               @default -> None
+        success_bracket_sign    (str): Bracket style, which is going to be applied on success               @default -> None
+        time_bracket_sign       (str): Bracket style, which is going to be applied on a log                 @default -> None
+
         warn_sign_color         (str): Color of the warning sign                                            @default -> white
         fail_sign_color         (str): Color of the failure sign                                            @default -> yellow
         success_sign_color      (str): Color of the success sign                                            @default -> blue
@@ -220,7 +229,7 @@ class NBConfig:
         time_background_color   (str):The background behind the time sigh                                   @default -> None
 
         is_underlined           (bool): Is the sign underlined?                                             @default -> False
-        bracket_style           (str): Type of brackets to be used around the sign                          @default -> SQUARE
+        bracket_style           (str): Type of brackets to be used around the sign                          @default -> None
                 (styles: SQUARE, CURLY, ANGLE, ROUND)
                 Note: If you want to make your own bracket types, follow the pattern: @{opening_bracket}\[@s]{closing_bracket}
                 This way the program would know how to split the provided brackets
@@ -246,29 +255,32 @@ class NBConfig:
     Depending on your approach, you can set the attributes directly trough the constructor, or you can use the defined getters and setters.
     """
     def __init__(self,
-                    warn_color=DEFAULT_WARN_COLOR, 
-                    fail_color=DEFAULT_FAIL_COLOR,
-                    success_color=DEFAULT_SUCCESS_COLOR,
-                    time_color=DEFAULT_TIME_COLOR,
-                    warn_bracket_color=DEFAULT_WARN_BRACKET_COLOR,
-                    fail_bracket_color=DEFAULT_FAIL_BRACKET_COLOR,
-                    success_bracket_color=DEFAULT_SUCCESS_BRACKET_COLOR,
-                    time_bracket_color=DEFAULT_TIME_BRACKET_COLOR,
-                    warn_sign_color=DEFAULT_WARN_SIGN_COLOR,
-                    fail_sign_color=DEFAULT_FAIL_SIGN_COLOR,
-                    success_sign_color=DEFAULT_SUCCESS_SIGN_COLOR,
-                    time_sign_color=DEFAULT_TIME_SIGN_COLOR,
-                    warn_sign=DEFAULT_WARN_SIGN,
-                    fail_sign=DEFAULT_FAIL_SIGN,
-                    success_sign=DEFAULT_SUCCESS_SIGN,
-                    time_sign_stamp=DEFAULT_TIME_SIGN,
-                    warn_background_color=DEFAULT_WARN_BACKGROUND_COLOR,
-                    fail_background_color=DEFAULT_FAIL_BACKGROUND_COLOR,
-                    success_background_color=DEFAULT_SUCCESS_BACKGROUND_COLOR,
-                    time_background_color=DEFAULT_TIME_BACKGROUND_COLOR,
-                    bracket_style=DEFAULT_BRACKET_STYLE,
-                    is_underlined=DEFAULT_IS_UNDERLINED):
-        
+                    warn_color =                DEFAULT_WARN_COLOR, 
+                    fail_color =                DEFAULT_FAIL_COLOR,
+                    success_color =             DEFAULT_SUCCESS_COLOR,
+                    time_color =                DEFAULT_TIME_COLOR,
+                    warn_bracket_color =        DEFAULT_WARN_BRACKET_COLOR,
+                    fail_bracket_color =        DEFAULT_FAIL_BRACKET_COLOR,
+                    success_bracket_color =     DEFAULT_SUCCESS_BRACKET_COLOR,
+                    time_bracket_color =        DEFAULT_TIME_BRACKET_COLOR,
+                    warn_bracket_sign =         DEFAULT_WARN_BRACKET_SIGN,
+                    fail_bracket_sign =         DEFAULT_FAIL_BRACKET_SIGN,
+                    success_bracket_sign =      DEFAULT_SUCCESS_BRACKET_SIGN,
+                    time_bracket_sign =         DEFAULT_TIME_BRACKET_SIGN,
+                    warn_sign_color =           DEFAULT_WARN_SIGN_COLOR,
+                    fail_sign_color =           DEFAULT_FAIL_SIGN_COLOR,
+                    success_sign_color =        DEFAULT_SUCCESS_SIGN_COLOR,
+                    time_sign_color =           DEFAULT_TIME_SIGN_COLOR,
+                    warn_sign =                 DEFAULT_WARN_SIGN,
+                    fail_sign =                 DEFAULT_FAIL_SIGN,
+                    success_sign =              DEFAULT_SUCCESS_SIGN,
+                    time_sign_stamp =           DEFAULT_TIME_SIGN,
+                    warn_background_color =     DEFAULT_WARN_BACKGROUND_COLOR,
+                    fail_background_color =     DEFAULT_FAIL_BACKGROUND_COLOR,
+                    success_background_color =  DEFAULT_SUCCESS_BACKGROUND_COLOR,
+                    time_background_color =     DEFAULT_TIME_BACKGROUND_COLOR,
+                    bracket_style =             DEFAULT_BRACKET_STYLE,
+                    is_underlined =             DEFAULT_IS_UNDERLINED):
 
         self._warn_color = warn_color
         self._fail_color = fail_color
@@ -278,7 +290,12 @@ class NBConfig:
         self._warn_bracket_color = warn_bracket_color
         self._fail_bracket_color = fail_bracket_color
         self._success_bracket_color = success_bracket_color
-        self._time_bracket_color = time_bracket_color
+        self._time_bracket_color = time_bracket_color  
+
+        self._warn_bracket_sign = warn_bracket_sign
+        self._fail_bracket_sign = fail_bracket_sign
+        self._success_bracket_sign = success_bracket_sign
+        self._time_bracket_sign = time_bracket_sign
 
         self._warn_sign_color = warn_sign_color
         self._fail_sign_color = fail_sign_color
@@ -329,6 +346,22 @@ class NBConfig:
         @property
         def time_bracket_color(self) -> str:
             return self._time_bracket_color
+
+        @property
+        def warn_bracket_sign(self) -> str:
+            return self._warn_bracket_sign
+        
+        @property
+        def fail_bracket_sign(self) -> str:
+            return self._fail_bracket_sign
+        
+        @property
+        def success_bracket_sign(self) -> str:
+            return self._success_bracket_sign
+        
+        @property
+        def time_bracket_sign(self) -> str:
+            return self._time_bracket_sign
 
         @property
         def warn_sign_color(self) -> str:
@@ -417,6 +450,22 @@ class NBConfig:
         @time_bracket_color.setter
         def time_bracket_color(self, value: str):
             self._time_bracket_color = value.lower().strip()
+
+        @warn_bracket_sign.setter
+        def warn_bracket_sign(self, value: str):
+            self._warn_bracket_sign = value.strip()
+
+        @fail_bracket_sign.setter
+        def fail_bracket_sign(self, value: str):
+            self._fail_bracket_sign = value.strip()
+
+        @success_bracket_sign.setter
+        def success_bracket_sign(self, value: str):
+            self._success_bracket_sign = value.strip()
+
+        @time_bracket_sign.setter
+        def time_bracket_sign(self, value: str):
+            self._time_bracket_sign = value.strip() 
 
         @warn_sign_color.setter
         def warn_sign_color(self, value: str):
@@ -539,38 +588,44 @@ class NBHandler:
         else:
             raise InvalidFormatError("Invalid format!")
             
-    def success(self, message) -> str:
+    def success(self, message) -> str: 
+        bracket_sign = self.configuration._success_bracket_sign if self.configuration._success_bracket_sign is not None else self.configuration._bracket_style
+
         try:
             return self.format_message( self.configuration._success_color,
                                         self.configuration._success_sign_color,
                                         self.configuration._success_bracket_color,
                                         self.configuration._success_sign, 
                                         self.configuration._success_background_color,
-                                        self.configuration._bracket_style,
+                                        bracket_t=bracket_sign,
                                         message=message)
         except InvalidFormatError as ie:
             print(ie)
 
     def warn(self, message) -> str:
+        bracket_sign = self.configuration._warn_bracket_sign if self.configuration._warn_bracket_sign is not None else self.configuration._bracket_style
+
         try:
             return self.format_message( self.configuration._warn_color,
                                         self.configuration._warn_sign_color,
                                         self.configuration._warn_bracket_color,
                                         self.configuration._warn_sign,
                                         self.configuration._warn_background_color,
-                                        self.configuration._bracket_style,
+                                        bracket_t=bracket_sign,
                                         message=message)
         except InvalidFormatError as ie:
             print(ie)
 
     def fail(self, message) -> str:
+        bracket_sign = self.configuration._fail_bracket_sign if self.configuration._fail_bracket_sign is not None else self.configuration._bracket_style
+
         try:
             return self.format_message( self.configuration._fail_color,
                                         self.configuration._fail_sign_color,
                                         self.configuration._fail_bracket_color,
                                         self.configuration._fail_sign, 
                                         self.configuration._fail_background_color,
-                                        self.configuration._bracket_style,
+                                        bracket_t=bracket_sign,
                                         message=message)
         except InvalidFormatError as ie:
             print(ie)
@@ -586,7 +641,7 @@ class NBHandler:
         time_stamp_ext =    self.configuration._time_sign_stamp
         background_color =  self.configuration._time_background_color
 
-        bracket_type_str =  self.configuration._bracket_style # str
+        bracket_type_str =  bracket_sign = self.configuration._time_bracket_sign if self.configuration._time_bracket_sign is not None else self.configuration._bracket_style
         opening_bracket = '['
         closing_bracket = ']'
 
