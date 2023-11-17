@@ -10,6 +10,15 @@
 # Easy and colorful terminal notifications for logs and debugging
 #                  -- Deyan Sirakov @ 2023 --
 
+#   TODO: Changable braces
+
+# TODO: Braces styles are not for a single object, bozo
+#   TODO: Reformat the names
+#   TODO: No time colors?
+#   TODO: Repeating code in the logs 
+#   TODO: Document, Underlined
+#   TODO: Configuration files
+
 # imports
 from enum import Enum
 from datetime import datetime
@@ -116,7 +125,7 @@ DEFAULT_FAIL_BACKGROUND_COLOR = None
 DEFAULT_SUCCESS_BACKGROUND_COLOR = None
 DEFAULT_TIME_BACKGROUND_COLOR = None
 
-DEFAULT_BRACKET_STYLE = Brackets.SQUARE
+DEFAULT_BRACKET_STYLE = "SQUARE"
 DEFAULT_IS_UNDERLINED = False
 
 
@@ -166,10 +175,6 @@ class BGColors(Enum):
     bright_cyan =       BG_BRIGHT_CYAN
     bright_white =      BG_BRIGHT_WHITE
 
-#   TODO: Changable braces
-#   TODO: Document, Underlined
-#   TODO: Configuration files
-
 class InvalidFormatError(RuntimeError):
     """
     Exception, which is throwed when the format you provided is not supported.
@@ -215,8 +220,10 @@ class NBConfig:
         time_background_color   (str):The background behind the time sigh                                   @default -> None
 
         is_underlined           (bool): Is the sign underlined?                                             @default -> False
-        bracket_style           (Brackets): Type of brackets to be used around the sign                     @default -> SQUARE
+        bracket_style           (str): Type of brackets to be used around the sign                          @default -> SQUARE
                 (styles: SQUARE, CURLY, ANGLE, ROUND)
+                Note: If you want to make your own bracket types, follow the pattern: @{opening_bracket}\[@s]{closing_bracket}
+                This way the program would know how to split the provided brackets
 
     Supported colors:
         * black
@@ -372,7 +379,7 @@ class NBConfig:
             return self._time_background_color
         
         @property
-        def bracket_style(self) -> Brackets:
+        def bracket_style(self) -> str:
             return self._bracket_style
         
         @property
@@ -460,7 +467,7 @@ class NBConfig:
             self._time_background_color = value.lower().strip()
 
         @bracket_style.setter
-        def bracket_style(self, value: Brackets):
+        def bracket_style(self, value: str):
             self._bracket_style = value
 
         @is_underlined.setter
@@ -476,7 +483,7 @@ class NBHandler:
         else:
             self.configuration = configuration
 
-    def format_message(self, text_c, sign_c, bracket_c, sign, background_c, message):
+    def format_message(self, text_c, sign_c, bracket_c, sign, background_c, bracket_t, message):
         out = ""
 
         text_color =        text_c
@@ -484,6 +491,34 @@ class NBHandler:
         bracket_color =     bracket_c
         sign =              sign
         background_color =  background_c
+
+        bracket_type_str =  bracket_t # str
+        opening_bracket = '['
+        closing_bracket = ']'
+
+        bracket_type_str = bracket_type_str.upper().strip() # Format the bracket type correctly
+
+        bracket_type = Brackets[bracket_type_str] # Bracket
+
+        if bracket_type == Brackets.ANGLE:
+            opening_bracket = '<'
+            closing_bracket = '>'
+        elif bracket_type == Brackets.CURLY:
+            opening_bracket = '{'
+            closing_bracket = '}'
+        elif bracket_type == Brackets.ROUND:
+            opening_bracket = '('
+            closing_bracket = ')'
+        elif bracket_type == Brackets.SQUARE:
+            opening_bracket = '['
+            closing_bracket = ']'
+        else:
+            if bracket_type_str[0] == '@': # Then it's a custom '\[@s]'
+                tokens = bracket_type_str.split('\[@s]')
+                opening_bracket = tokens[0].strip()
+                closing_bracket = tokens[1].strip()
+            else:
+                raise InvalidFormatError("Invalud bracket type!")
 
         background_color_value = None
 
@@ -497,7 +532,7 @@ class NBHandler:
                 background_color_value = BGColors[background_color].value
                 out += f"{ANSI.background(background_color_value)}"
             
-            out += f"{ANSI.color_text(bracket_color_value)}[{ANSI.color_text(sign_color_value) + sign + ANSI.color_text(bracket_color_value)}] {ANSI.color_text(text_color_value)}{message}"
+            out += f"{ANSI.color_text(bracket_color_value)}{opening_bracket}{ANSI.color_text(sign_color_value) + sign + ANSI.color_text(bracket_color_value)}{closing_bracket} {ANSI.color_text(text_color_value)}{message}"
             out += f"{RESET_STYLE}"
 
             return out
@@ -511,6 +546,7 @@ class NBHandler:
                                         self.configuration._success_bracket_color,
                                         self.configuration._success_sign, 
                                         self.configuration._success_background_color,
+                                        self.configuration._bracket_style,
                                         message=message)
         except InvalidFormatError as ie:
             print(ie)
@@ -522,6 +558,7 @@ class NBHandler:
                                         self.configuration._warn_bracket_color,
                                         self.configuration._warn_sign,
                                         self.configuration._warn_background_color,
+                                        self.configuration._bracket_style,
                                         message=message)
         except InvalidFormatError as ie:
             print(ie)
@@ -533,6 +570,7 @@ class NBHandler:
                                         self.configuration._fail_bracket_color,
                                         self.configuration._fail_sign, 
                                         self.configuration._fail_background_color,
+                                        self.configuration._bracket_style,
                                         message=message)
         except InvalidFormatError as ie:
             print(ie)
@@ -547,6 +585,34 @@ class NBHandler:
         bracket_color =     self.configuration._time_bracket_color
         time_stamp_ext =    self.configuration._time_sign_stamp
         background_color =  self.configuration._time_background_color
+
+        bracket_type_str =  self.configuration._bracket_style # str
+        opening_bracket = '['
+        closing_bracket = ']'
+
+        bracket_type_str = bracket_type_str.upper().strip() # Format the bracket type correctly
+
+        bracket_type = Brackets[bracket_type_str] # Bracket
+
+        if bracket_type == Brackets.ANGLE:
+            opening_bracket = '<'
+            closing_bracket = '>'
+        elif bracket_type == Brackets.CURLY:
+            opening_bracket = '{'
+            closing_bracket = '}'
+        elif bracket_type == Brackets.ROUND:
+            opening_bracket = '('
+            closing_bracket = ')'
+        elif bracket_type == Brackets.SQUARE:
+            opening_bracket = '['
+            closing_bracket = ']'
+        else:
+            if bracket_type_str[0] == '@': # Then it's a custom '\[@s]'
+                tokens = bracket_type_str.split('\[@s]')
+                opening_bracket = tokens[0].strip()
+                closing_bracket = tokens[1].strip()
+            else:
+                raise InvalidFormatError("Invalud bracket type!")
 
         background_color_value = None
         time_stamp_value = None
@@ -584,7 +650,7 @@ class NBHandler:
                 background_color_value = BGColors[background_color].value
                 out += f"{ANSI.background(background_color_value)}"
 
-            out += f"{ANSI.color_text(bracket_color_value)}[{ANSI.color_text(sign_color_value) + date_time.strftime(time_stamp_value) + ANSI.color_text(bracket_color_value)}] {ANSI.color_text(text_color_value)}{message}"
+            out += f"{ANSI.color_text(bracket_color_value)}{opening_bracket}{ANSI.color_text(sign_color_value) + date_time.strftime(time_stamp_value) + ANSI.color_text(bracket_color_value)}{closing_bracket} {ANSI.color_text(text_color_value)}{message}"
             out += f"{RESET_STYLE}"
 
             return out

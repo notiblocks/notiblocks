@@ -12,7 +12,8 @@ def main():
         time_sign_color="red",
         success_sign="SUCCESS",
         success_bracket_color="cyan",
-        time_sign_stamp="DATE"
+        time_sign_stamp="DATE",
+        bracket_style="round     "
     )
 
     nb_handler = NBHandler(nb_conf)
