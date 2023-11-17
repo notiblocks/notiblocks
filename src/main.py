@@ -19,7 +19,7 @@ def main():
 
     nb_handler = NBHandler(nb_conf)
 
-    print(nb_handler.success("This is a successful message"))
+    print(nb_handler.success("This is a @{%TEST%} successful message"))
     print(nb_handler.fail("And this is a failed message"))
     print(nb_handler.warn("But this is a warning message"))
     print(nb_handler.log("This is a logged message."))

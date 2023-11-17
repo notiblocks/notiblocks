@@ -130,6 +130,9 @@ class NBInline(Enum):
     The Notiblocks inline formatting module
     You can use it for inline message formatting, just import it
     into your module and use this syntax for example @{%RESET%}
+    
+    Note, that some of these may not work with your terminal emulator.
+    It depends only on the terminal and the terminal itself.
     """
     RESET = 0
     BOLD = 1
@@ -557,12 +560,42 @@ class NBConfig:
         def is_underlined(self, value: bool):
             self._is_underlined = value
 
+class PosHolder:
+        def __init__(self) -> None:
+            self._format_type = "undefined"
+            self._start_pos = 0
+            self._end_pos = 0
+
+        @property
+        def format_type(self) -> str:
+            return self._format_type
+        
+        @property
+        def start_pos(self) -> int:
+            return self._start_pos
+        
+        @property
+        def end_pos(self) -> int:
+            return self._end_pos
+        
+        @format_type.setter
+        def format_type(self, value: str):
+            self._format_type = value
+
+        @start_pos.setter
+        def start_pos(self, value: int):
+            self._start_pos = value
+
+        @end_pos.setter
+        def end_pos(self, value: int):
+            self._end_pos = value
 
 # Notification Block Handler
 class NBHandler:
 
     # TODO: Document
-
+    
+         
     def __init__(self, configuration: NBConfig):
         if configuration is None:
             configuration = NBConfig()
@@ -573,6 +606,35 @@ class NBHandler:
         out = ""
 
         # TODO: line parsing?
+
+        # @{%RESET%}
+        message_ptr = 0
+        format_contents = []
+        while message_ptr < len(message):
+            if message[message_ptr] == '@' and message[message_ptr + 1] == '{' and message[message_ptr + 2] == '%':
+                format_holder = PosHolder()
+                format_holder.format_type = ""
+                format_holder.start_pos = message_ptr
+                format_holder.end_pos = 0
+                
+                message_ptr += 3 # move to the block after the iterator
+
+                while message[message_ptr] != '%' and message[message_ptr + 1] != '}': # We hit a pass
+                    format_holder.format_type += message[message_ptr]
+                    message_ptr += 1
+
+                message_ptr += 1
+                format_holder.end_pos = message_ptr
+                format_contents.append(format_holder)
+            else: # No expression, so we move the iterator
+                message_ptr += 1
+        
+        for x in format_contents:
+            print("Format", x.format_type)
+            print("Start:", x.start_pos)
+            print("End", x.end_pos)
+
+        # TODO: Apply formating where needed
 
         text_color =        text_c.lower().strip() if text_c is not None else None
         sign_color =        sign_c.lower().strip() if sign_c is not None else None

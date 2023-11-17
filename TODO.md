@@ -2,6 +2,9 @@
 
 ## Font Effects
 - [ ] Implement all font effects
+    - [+] Make an enumeration, which holds all of the possible formats
+    - [+] Find the formats
+    - [ ] Implement formatting logic
 
 ## Underlining
 - [ ] **Underlining Functionality**
