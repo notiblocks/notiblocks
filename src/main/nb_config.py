@@ -1,3 +1,4 @@
+import constants
 
 class NBConfig:
     """
@@ -62,32 +63,32 @@ class NBConfig:
     Depending on your approach, you can set the attributes directly trough the constructor, or you can use the defined getters and setters.
     """
     def __init__(self,
-                    warn_color =                DEFAULT_WARN_COLOR, 
-                    fail_color =                DEFAULT_FAIL_COLOR,
-                    success_color =             DEFAULT_SUCCESS_COLOR,
-                    time_color =                DEFAULT_TIME_COLOR,
-                    warn_bracket_color =        DEFAULT_WARN_BRACKET_COLOR,
-                    fail_bracket_color =        DEFAULT_FAIL_BRACKET_COLOR,
-                    success_bracket_color =     DEFAULT_SUCCESS_BRACKET_COLOR,
-                    time_bracket_color =        DEFAULT_TIME_BRACKET_COLOR,
-                    warn_bracket_sign =         DEFAULT_WARN_BRACKET_SIGN,
-                    fail_bracket_sign =         DEFAULT_FAIL_BRACKET_SIGN,
-                    success_bracket_sign =      DEFAULT_SUCCESS_BRACKET_SIGN,
-                    time_bracket_sign =         DEFAULT_TIME_BRACKET_SIGN,
-                    warn_sign_color =           DEFAULT_WARN_SIGN_COLOR,
-                    fail_sign_color =           DEFAULT_FAIL_SIGN_COLOR,
-                    success_sign_color =        DEFAULT_SUCCESS_SIGN_COLOR,
-                    time_sign_color =           DEFAULT_TIME_SIGN_COLOR,
-                    warn_sign =                 DEFAULT_WARN_SIGN,
-                    fail_sign =                 DEFAULT_FAIL_SIGN,
-                    success_sign =              DEFAULT_SUCCESS_SIGN,
-                    time_sign_stamp =           DEFAULT_TIME_SIGN,
-                    warn_background_color =     DEFAULT_WARN_BACKGROUND_COLOR,
-                    fail_background_color =     DEFAULT_FAIL_BACKGROUND_COLOR,
-                    success_background_color =  DEFAULT_SUCCESS_BACKGROUND_COLOR,
-                    time_background_color =     DEFAULT_TIME_BACKGROUND_COLOR,
-                    bracket_style =             DEFAULT_BRACKET_STYLE,
-                    is_underlined =             DEFAULT_IS_UNDERLINED):
+                    warn_color =                constants.DEFAULT_WARN_COLOR, 
+                    fail_color =                constants.DEFAULT_FAIL_COLOR,
+                    success_color =             constants.DEFAULT_SUCCESS_COLOR,
+                    time_color =                constants.DEFAULT_TIME_COLOR,
+                    warn_bracket_color =        constants.DEFAULT_WARN_BRACKET_COLOR,
+                    fail_bracket_color =        constants.DEFAULT_FAIL_BRACKET_COLOR,
+                    success_bracket_color =     constants.DEFAULT_SUCCESS_BRACKET_COLOR,
+                    time_bracket_color =        constants.DEFAULT_TIME_BRACKET_COLOR,
+                    warn_bracket_sign =         constants.DEFAULT_WARN_BRACKET_SIGN,
+                    fail_bracket_sign =         constants.DEFAULT_FAIL_BRACKET_SIGN,
+                    success_bracket_sign =      constants.DEFAULT_SUCCESS_BRACKET_SIGN,
+                    time_bracket_sign =         constants.DEFAULT_TIME_BRACKET_SIGN,
+                    warn_sign_color =           constants.DEFAULT_WARN_SIGN_COLOR,
+                    fail_sign_color =           constants.DEFAULT_FAIL_SIGN_COLOR,
+                    success_sign_color =        constants.DEFAULT_SUCCESS_SIGN_COLOR,
+                    time_sign_color =           constants.DEFAULT_TIME_SIGN_COLOR,
+                    warn_sign =                 constants.DEFAULT_WARN_SIGN,
+                    fail_sign =                 constants.DEFAULT_FAIL_SIGN,
+                    success_sign =              constants.DEFAULT_SUCCESS_SIGN,
+                    time_sign_stamp =           constants.DEFAULT_TIME_SIGN,
+                    warn_background_color =     constants.DEFAULT_WARN_BACKGROUND_COLOR,
+                    fail_background_color =     constants.DEFAULT_FAIL_BACKGROUND_COLOR,
+                    success_background_color =  constants.DEFAULT_SUCCESS_BACKGROUND_COLOR,
+                    time_background_color =     constants.DEFAULT_TIME_BACKGROUND_COLOR,
+                    bracket_style =             constants.DEFAULT_BRACKET_STYLE,
+                    is_underlined =             constants.DEFAULT_IS_UNDERLINED):
 
         self._warn_color = warn_color
         self._fail_color = fail_color
