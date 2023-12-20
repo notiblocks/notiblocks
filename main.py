@@ -1,7 +1,8 @@
 import time
 import random
-import notiblocks as nb
-from notiblocks import NBConfig, NBHandler
+
+from src.main.nb_config import NBConfig
+from src.main.nb_handler import NBHandler
 
 # METHODS
 def main():
