@@ -8,12 +8,18 @@ from .error.invalid_format_error import InvalidFormatError
 from .enums.colors.bgcolors import BGColors
 from .enums.colors.fgcolors import FGColors
 
+from .constants import RESET_STYLE
+
 from .enums.timestampformat import TimeStampFormats
+
+from .posholder import PosHolder
 
 from .ansi import ANSI
 
 import time
-import datetime
+from datetime import datetime
+import time
+
 
 class NBHandler:
 
@@ -38,7 +44,7 @@ class NBHandler:
         while message_ptr < len(message):
             if message[message_ptr] == '@' and message[message_ptr + 1] == '{' and message[message_ptr + 2] == '%':
                 has_format = True
-                format_holder = PosHolder() # Watafak is PosHolder?
+                format_holder = PosHolder()
                 format_holder.format_type = ""
                 format_holder.start_pos = message_ptr
                 format_holder.end_pos = 0
@@ -132,7 +138,7 @@ class NBHandler:
                 out += f"{ANSI.background(background_color_value)}"
             
             out += f"{ANSI.color_text(bracket_color_value)}{opening_bracket}{ANSI.color_text(sign_color_value) + sign + ANSI.color_text(bracket_color_value)}{closing_bracket} {ANSI.color_text(text_color_value)}{message}"
-            out += f"{NBInline.RESET_STYLE}"
+            out += f"{RESET_STYLE}"
 
             return out
         else:
@@ -256,7 +262,7 @@ class NBHandler:
                 out += f"{ANSI.background(background_color_value)}"
 
             out += f"{ANSI.color_text(bracket_color_value)}{opening_bracket}{ANSI.color_text(sign_color_value) + date_time.strftime(time_stamp_value) + ANSI.color_text(bracket_color_value)}{closing_bracket} {ANSI.color_text(text_color_value)}{message}"
-            out += f"{NBInline.RESET_STYLE}"
+            out += f"{RESET_STYLE}"
 
             return out
         else:
