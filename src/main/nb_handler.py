@@ -1,16 +1,16 @@
-from nb_config import NBConfig
-from enums.brackets import Brackets
+from .nb_config import NBConfig
+from .enums.brackets import Brackets
 
-from enums.nb_inline import NBInline
+from .enums.nb_inline import NBInline
 
-from error.invalid_format_error import InvalidFormatError
+from .error.invalid_format_error import InvalidFormatError
 
-from enums.colors.bgcolors import BGColors
-from enums.colors.fgcolors import FGColors
+from .enums.colors.bgcolors import BGColors
+from .enums.colors.fgcolors import FGColors
 
-from enums.timestampformat import TimeStampFormats
+from .enums.timestampformat import TimeStampFormats
 
-from ansi import ANSI
+from .ansi import ANSI
 
 import time
 import datetime
