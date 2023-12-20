@@ -1,5 +1,6 @@
 from enum import Enum
-from nb_inline import NBInline
+
+from ...constants import *
 
 class FGColors(Enum):
     """
