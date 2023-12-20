@@ -20,7 +20,6 @@ import time
 from datetime import datetime
 import time
 
-
 class NBHandler:
 
     # TODO: Document

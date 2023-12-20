@@ -6,6 +6,8 @@
     - [+] Find the formats
     - [ ] Implement formatting logic
 
+- [ ] Chache some shit
+
 ## Underlining
 - [ ] **Underlining Functionality**
     - [ ] Implement general underlining feature

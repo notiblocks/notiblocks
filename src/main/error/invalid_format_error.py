@@ -1,4 +1,5 @@
 from ..ansi import ANSI
+from enums.nb_inline import NBInline
 
 class InvalidFormatError(RuntimeError):
     """
@@ -11,4 +12,4 @@ class InvalidFormatError(RuntimeError):
         self._message = message
 
     def __str__(self) -> str:
-        return f"{ANSI.background(BG_RED)}{ANSI.color_text(FG_YELLOW)}[{ANSI.color_text(FG_WHITE)}EXCEPTION{ANSI.color_text(FG_YELLOW)}]{ANSI.color_text(FG_WHITE)}{self._message}{RESET_STYLE}"
+        return f"{ANSI.background(NBInline.BG_RED)}{ANSI.color_text(NBInline.FG_YELLOW)}[{ANSI.color_text(NBInline.FG_WHITE)}EXCEPTION{ANSI.color_text(NBInline.FG_YELLOW)}]{ANSI.color_text(NBInline.FG_WHITE)}{self._message}{NBInline.RESET_STYLE}"
