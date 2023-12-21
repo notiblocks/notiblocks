@@ -21,15 +21,48 @@ from datetime import datetime
 import time
 
 class NBHandler:
-
-    # TODO: Document
     
+    """
+    NB Handler class..
+    Document that shi
+    """
          
     def __init__(self, configuration: NBConfig):
+
         if configuration is None:
             configuration = NBConfig()
         else:
             self.configuration = configuration
+
+    
+    def handle_message(self, message, method_type) -> str:
+        
+        bracket_sign = getattr(self.configuration, f"_{method_type}_bracket_sign", self.configuration._bracket_style)
+        
+        try:
+            return self.format_message(
+                getattr(self.configuration, f"_{method_type}_color", None),
+                getattr(self.configuration, f"_{method_type}_sign_color", None),
+                getattr(self.configuration, f"_{method_type}_bracket_color", None),
+                getattr(self.configuration, f"_{method_type}_sign", None),
+                getattr(self.configuration, f"_{method_type}_background_color", None),
+                bracket_t=bracket_sign,
+                message=message
+            )
+        except InvalidFormatError as ie:
+            print(ie)
+
+    def success(self, message) -> str:
+        return self.handle_message(message, "success")
+
+    def warn(self, message) -> str:
+        return self.handle_message(message, "warn")
+
+    def fail(self, message) -> str:
+        return self.handle_message(message, "fail")
+
+    def log(self, message) -> str:
+        return self.handle_message(message, "log")
 
     def format_message(self, text_c, sign_c, bracket_c, sign, background_c, bracket_t, message):
         out = ""
@@ -143,126 +176,126 @@ class NBHandler:
         else:
             raise InvalidFormatError("Invalid format!")
             
-    def success(self, message) -> str: 
-        bracket_sign = self.configuration._success_bracket_sign if self.configuration._success_bracket_sign is not None else self.configuration._bracket_style
+    # def success(self, message) -> str: 
+    #     bracket_sign = self.configuration._success_bracket_sign if self.configuration._success_bracket_sign is not None else self.configuration._bracket_style
 
-        try:
-            return self.format_message( self.configuration._success_color,
-                                        self.configuration._success_sign_color,
-                                        self.configuration._success_bracket_color,
-                                        self.configuration._success_sign, 
-                                        self.configuration._success_background_color,
-                                        bracket_t=bracket_sign,
-                                        message=message)
-        except InvalidFormatError as ie:
-            print(ie)
+    #     try:
+    #         return self.format_message( self.configuration._success_color,
+    #                                     self.configuration._success_sign_color,
+    #                                     self.configuration._success_bracket_color,
+    #                                     self.configuration._success_sign, 
+    #                                     self.configuration._success_background_color,
+    #                                     bracket_t=bracket_sign,
+    #                                     message=message)
+    #     except InvalidFormatError as ie:
+    #         print(ie)
 
-    def warn(self, message) -> str:
-        bracket_sign = self.configuration._warn_bracket_sign if self.configuration._warn_bracket_sign is not None else self.configuration._bracket_style
+    # def warn(self, message) -> str:
+    #     bracket_sign = self.configuration._warn_bracket_sign if self.configuration._warn_bracket_sign is not None else self.configuration._bracket_style
 
-        try:
-            return self.format_message( self.configuration._warn_color,
-                                        self.configuration._warn_sign_color,
-                                        self.configuration._warn_bracket_color,
-                                        self.configuration._warn_sign,
-                                        self.configuration._warn_background_color,
-                                        bracket_t=bracket_sign,
-                                        message=message)
-        except InvalidFormatError as ie:
-            print(ie)
+    #     try:
+    #         return self.format_message( self.configuration._warn_color,
+    #                                     self.configuration._warn_sign_color,
+    #                                     self.configuration._warn_bracket_color,
+    #                                     self.configuration._warn_sign,
+    #                                     self.configuration._warn_background_color,
+    #                                     bracket_t=bracket_sign,
+    #                                     message=message)
+    #     except InvalidFormatError as ie:
+    #         print(ie)
 
-    def fail(self, message) -> str:
-        bracket_sign = self.configuration._fail_bracket_sign if self.configuration._fail_bracket_sign is not None else self.configuration._bracket_style
+    # def fail(self, message) -> str:
+    #     bracket_sign = self.configuration._fail_bracket_sign if self.configuration._fail_bracket_sign is not None else self.configuration._bracket_style
 
-        try:
-            return self.format_message( self.configuration._fail_color,
-                                        self.configuration._fail_sign_color,
-                                        self.configuration._fail_bracket_color,
-                                        self.configuration._fail_sign, 
-                                        self.configuration._fail_background_color,
-                                        bracket_t=bracket_sign,
-                                        message=message)
-        except InvalidFormatError as ie:
-            print(ie)
+    #     try:
+    #         return self.format_message( self.configuration._fail_color,
+    #                                     self.configuration._fail_sign_color,
+    #                                     self.configuration._fail_bracket_color,
+    #                                     self.configuration._fail_sign, 
+    #                                     self.configuration._fail_background_color,
+    #                                     bracket_t=bracket_sign,
+    #                                     message=message)
+    #     except InvalidFormatError as ie:
+    #         print(ie)
 
-    def log(self, message) -> str:
-        out = ""
-        current_time = time.time()
-        date_time = datetime.fromtimestamp(current_time)
+    # def log(self, message) -> str:
+    #     out = ""
+    #     current_time = time.time()
+    #     date_time = datetime.fromtimestamp(current_time)
 
-        text_color =        self.configuration._time_color.lower().strip() if self.configuration._time_color is not None else None
-        sign_color =        self.configuration._time_sign_color.lower().strip() if self.configuration._time_sign_color is not None else None
-        bracket_color =     self.configuration._time_bracket_color.lower().strip() if self.configuration._time_bracket_color is not None else None
-        time_stamp_ext =    self.configuration._time_sign_stamp
-        background_color =  self.configuration._time_background_color.lower().strip() if self.configuration._time_background_color is not None else None
+    #     text_color =        self.configuration._time_color.lower().strip() if self.configuration._time_color is not None else None
+    #     sign_color =        self.configuration._time_sign_color.lower().strip() if self.configuration._time_sign_color is not None else None
+    #     bracket_color =     self.configuration._time_bracket_color.lower().strip() if self.configuration._time_bracket_color is not None else None
+    #     time_stamp_ext =    self.configuration._time_sign_stamp
+    #     background_color =  self.configuration._time_background_color.lower().strip() if self.configuration._time_background_color is not None else None
 
-        bracket_type_str =  bracket_sign = self.configuration._time_bracket_sign if self.configuration._time_bracket_sign is not None else self.configuration._bracket_style
-        opening_bracket = '['
-        closing_bracket = ']'
+    #     bracket_type_str =  bracket_sign = self.configuration._time_bracket_sign if self.configuration._time_bracket_sign is not None else self.configuration._bracket_style
+    #     opening_bracket = '['
+    #     closing_bracket = ']'
 
-        bracket_type_str = bracket_type_str.upper().strip() # Format the bracket type correctly
+    #     bracket_type_str = bracket_type_str.upper().strip() # Format the bracket type correctly
 
-        bracket_type = Brackets[bracket_type_str] # Bracket
+    #     bracket_type = Brackets[bracket_type_str] # Bracket
 
-        if bracket_type == Brackets.ANGLE:
-            opening_bracket = '<'
-            closing_bracket = '>'
-        elif bracket_type == Brackets.CURLY:
-            opening_bracket = '{'
-            closing_bracket = '}'
-        elif bracket_type == Brackets.ROUND:
-            opening_bracket = '('
-            closing_bracket = ')'
-        elif bracket_type == Brackets.SQUARE:
-            opening_bracket = '['
-            closing_bracket = ']'
-        else:
-            if bracket_type_str[0] == '@': # Then it's a custom '\[@s]'
-                tokens = bracket_type_str.split('\[@s]')
-                opening_bracket = tokens[0].strip()
-                closing_bracket = tokens[1].strip()
-            else:
-                raise InvalidFormatError("Invalud bracket type!")
+    #     if bracket_type == Brackets.ANGLE:
+    #         opening_bracket = '<'
+    #         closing_bracket = '>'
+    #     elif bracket_type == Brackets.CURLY:
+    #         opening_bracket = '{'
+    #         closing_bracket = '}'
+    #     elif bracket_type == Brackets.ROUND:
+    #         opening_bracket = '('
+    #         closing_bracket = ')'
+    #     elif bracket_type == Brackets.SQUARE:
+    #         opening_bracket = '['
+    #         closing_bracket = ']'
+    #     else:
+    #         if bracket_type_str[0] == '@': # Then it's a custom '\[@s]'
+    #             tokens = bracket_type_str.split('\[@s]')
+    #             opening_bracket = tokens[0].strip()
+    #             closing_bracket = tokens[1].strip()
+    #         else:
+    #             raise InvalidFormatError("Invalud bracket type!")
 
-        background_color_value = None
-        time_stamp_value = None
+    #     background_color_value = None
+    #     time_stamp_value = None
 
-        if text_color and sign_color and bracket_color in FGColors.__members__:
-            text_color_value =          FGColors[text_color].value
-            sign_color_value =          FGColors[sign_color].value
-            bracket_color_value =       FGColors[bracket_color].value
-            background_color_value =    BGColors.reset.value
-            time_stamp_value =          "%H:%M:%S" # Fallback
+    #     if text_color and sign_color and bracket_color in FGColors.__members__:
+    #         text_color_value =          FGColors[text_color].value
+    #         sign_color_value =          FGColors[sign_color].value
+    #         bracket_color_value =       FGColors[bracket_color].value
+    #         background_color_value =    BGColors.reset.value
+    #         time_stamp_value =          "%H:%M:%S" # Fallback
 
-            time_stamp_as_string = '_'.join(time_stamp_ext.split(' ')).upper()
+    #         time_stamp_as_string = '_'.join(time_stamp_ext.split(' ')).upper()
 
-            time_stamp = TimeStampFormats[time_stamp_as_string]
+    #         time_stamp = TimeStampFormats[time_stamp_as_string]
 
-            if time_stamp == TimeStampFormats.DATE:
-                time_stamp_value = "%d %B, %Y"
-            elif time_stamp == TimeStampFormats.DATE_AND_TIME:
-                time_stamp_value = "%d-%m-%Y %H:%M:%S"
-            elif time_stamp == TimeStampFormats.TIME:
-                time_stamp_value = "%H:%M:%S"
-            elif time_stamp == TimeStampFormats.TIME_EXPLICIT:
-                time_stamp_value = "%I%p %M:%S"
-            elif time_stamp == TimeStampFormats.DATE_AND_TIME_DOT_SEPARATION:
-                time_stamp_value = "%d.%m.%Y %H:%M:%S"
-            elif time_stamp is None and time_stamp_as_string[0] == "@":
-                time_stamp_as_string = time_stamp_as_string[1::]
+    #         if time_stamp == TimeStampFormats.DATE:
+    #             time_stamp_value = "%d %B, %Y"
+    #         elif time_stamp == TimeStampFormats.DATE_AND_TIME:
+    #             time_stamp_value = "%d-%m-%Y %H:%M:%S"
+    #         elif time_stamp == TimeStampFormats.TIME:
+    #             time_stamp_value = "%H:%M:%S"
+    #         elif time_stamp == TimeStampFormats.TIME_EXPLICIT:
+    #             time_stamp_value = "%I%p %M:%S"
+    #         elif time_stamp == TimeStampFormats.DATE_AND_TIME_DOT_SEPARATION:
+    #             time_stamp_value = "%d.%m.%Y %H:%M:%S"
+    #         elif time_stamp is None and time_stamp_as_string[0] == "@":
+    #             time_stamp_as_string = time_stamp_as_string[1::]
 
-                try:
-                    date_time.strftime(time_stamp_as_string)
-                except:
-                    raise InvalidFormatError("The provided date time format is invalid")
+    #             try:
+    #                 date_time.strftime(time_stamp_as_string)
+    #             except:
+    #                 raise InvalidFormatError("The provided date time format is invalid")
 
-            if not background_color is None:
-                background_color_value = BGColors[background_color].value
-                out += f"{ANSI.background(background_color_value)}"
+    #         if not background_color is None:
+    #             background_color_value = BGColors[background_color].value
+    #             out += f"{ANSI.background(background_color_value)}"
 
-            out += f"{ANSI.color_text(bracket_color_value)}{opening_bracket}{ANSI.color_text(sign_color_value) + date_time.strftime(time_stamp_value) + ANSI.color_text(bracket_color_value)}{closing_bracket} {ANSI.color_text(text_color_value)}{message}"
-            out += f"{RESET_STYLE}"
+    #         out += f"{ANSI.color_text(bracket_color_value)}{opening_bracket}{ANSI.color_text(sign_color_value) + date_time.strftime(time_stamp_value) + ANSI.color_text(bracket_color_value)}{closing_bracket} {ANSI.color_text(text_color_value)}{message}"
+    #         out += f"{RESET_STYLE}"
 
-            return out
-        else:
-            raise InvalidFormatError("Invalid time format")
+    #         return out
+    #     else:
+    #         raise InvalidFormatError("Invalid time format")
