@@ -52,8 +52,8 @@ import notiblocks
 ## Usage
 Notiblocks uses `NBConfig` and `NBHandler` objects, which let you customize your logs by your needs. You can access them trough the module.
 
-* **`NBConfig`**: Holds the information about how your logs will look. You can override the information trough the constructor, or through the setters. For further explanation check the [`docs`](/docs/nbconfig.md).
-* **NBHandler**: Wrapper class for the `NBConfig`, which provides the main functionalities as `success`, `fail`, `warn` and `log`. For further information check the [`docs`](/docs/nbhandler.md).
+* **`NBConfig`**: Holds the information about how your logs will look. You can override the information trough the constructor, or through the setters. For further explanation check the [`docs`](/docs/documented/nbconfig.md).
+* **NBHandler**: Wrapper class for the `NBConfig`, which provides the main functionalities as `success`, `fail`, `warn` and `log`. For further information check the [`docs`](/docs/documented/nbhandler.md).
 
 Example:
 ```python
