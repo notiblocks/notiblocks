@@ -35,34 +35,33 @@ class NBHandler:
             self.configuration = configuration
 
     
-    def handle_message(self, message, method_type) -> str:
-        
-        bracket_sign = getattr(self.configuration, f"_{method_type}_bracket_sign", self.configuration._bracket_style)
-        
+    def handle_message(self, message, color_prop, bracket_color_prop, bracket_sign_prop, sign_color_prop, sign_prop):
         try:
             return self.format_message(
-                getattr(self.configuration, f"_{method_type}_color", None),
-                getattr(self.configuration, f"_{method_type}_sign_color", None),
-                getattr(self.configuration, f"_{method_type}_bracket_color", None),
-                getattr(self.configuration, f"_{method_type}_sign", None),
-                getattr(self.configuration, f"_{method_type}_background_color", None),
-                bracket_t=bracket_sign,
+                getattr(self, color_prop, None),
+                getattr(self, sign_color_prop, None),
+                getattr(self, bracket_color_prop, None),
+                getattr(self, sign_prop, None),
+                None,  # Assuming no background color needed for notifications
+                bracket_t=getattr(self, bracket_sign_prop, None),
                 message=message
             )
         except InvalidFormatError as ie:
             print(ie)
+            # Handle the error appropriately
 
-    def success(self, message) -> str:
-        return self.handle_message(message, "success")
+    def warn(self, message):
+        return self.handle_message(message, '_warn_color', '_warn_bracket_color', '_warn_bracket_sign', '_warn_sign_color', '_warn_sign')
 
-    def warn(self, message) -> str:
-        return self.handle_message(message, "warn")
+    def fail(self, message):
+        return self.handle_message(message, '_fail_color', '_fail_bracket_color', '_fail_bracket_sign', '_fail_sign_color', '_fail_sign')
 
-    def fail(self, message) -> str:
-        return self.handle_message(message, "fail")
+    def success(self, message):
+        return self.handle_message(message, '_success_color', '_success_bracket_color', '_success_bracket_sign', '_success_sign_color', '_success_sign')
 
-    def log(self, message) -> str:
-        return self.handle_message(message, "log")
+    def log(self, message):
+        # Logic for logging with timestamp, etc.
+        pass
 
     def format_message(self, text_c, sign_c, bracket_c, sign, background_c, bracket_t, message):
         out = ""
