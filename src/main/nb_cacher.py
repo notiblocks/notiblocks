@@ -1,4 +1,4 @@
-# Cache the messages
+# Cache the messages (For later releases) 
 
 class NBCacher:
     pass

@@ -1,5 +1,11 @@
 # Project Completion Checklist
 
+### For current release:
+- [ ] Remove formatting
+- [ ] Fix file structure
+- [ ] Publish to pip
+
+### For further releases:
 ## Font Effects
 - [ ] Implement all font effects
     - [+] Make an enumeration, which holds all of the possible formats
