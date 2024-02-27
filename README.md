@@ -1,5 +1,5 @@
 # Notiblocks
-
+<img src="https://img.shields.io/pypi/dm/notiblocks?style=for-the-badge&logo=python&logoColor=blue&label=notiblocks&labelColor=white&color=green&link=https%3A%2F%2Fpypi.org%2Fproject%2Fnotiblocks%2F"/>
 Quick and easy customizable terminal logs for your application.
 
 ## Table of Contents
