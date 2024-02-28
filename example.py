@@ -1,10 +1,12 @@
 import time
 import random
 
-from src.notiblocks import NBConfig
-from src.notiblocks import NBHandler
+from notiblocks.notiblocks import NBConfig
+from notiblocks.notiblocks import NBHandler
 
-# METHODS
+from notiblocks.notiblocks import ILConfig
+from notiblocks.notiblocks import ILFormatter
+
 def main():
     print("== Notiblocks Examples ==")
     
@@ -20,7 +22,14 @@ def main():
 
     nb_handler = NBHandler(nb_conf)
 
-    #print(nb_handler.success("This is a @{%TEST%} successful message")) Shit not working, shit has to be fixed
+    # TODO: Implement the ILConfig and the ILFormatter classes
+    il_config = ILConfig(
+        color="red"
+    )
+
+    il_formatter = ILFormatter()
+
+    print(nb_handler.success(il_formatter.format("This is a $TEST$ successful message", [il_config])))
     print(nb_handler.fail("And this is a failed message"))
     print(nb_handler.warn("But this is a warning message"))
     print(nb_handler.log("This is a logged message."))

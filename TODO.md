@@ -1,10 +1,5 @@
 # Project Completion Checklist
 
-### For current release:
-- [ ] Remove formatting
-- [ ] Fix file structure
-- [ ] Publish to pip
-
 ### For further releases:
 ## Font Effects
 - [ ] Implement all font effects
@@ -12,7 +7,8 @@
     - [+] Find the formats
     - [ ] Implement formatting logic
 
-- [ ] Chache some shit
+- [ ] Chache some stuff
+- [ ] Use different types for configuration, like yaml and json 
 
 ## Underlining
 - [ ] **Underlining Functionality**
@@ -50,10 +46,10 @@
     - [ ] Create comprehensive user documentation
 
 ## Pip Deployment
-- [ ] **Publish on Pip**
-    - [ ] Prepare the project for distribution on Pip
-    - [ ] Confirm successful deployment
-    - [ ] Consider long-term maintenance strategies
+- [X] **Publish on Pip**
+    - [X] Prepare the project for distribution on Pip
+    - [X] Confirm successful deployment
+    - [X] Consider long-term maintenance strategies
 
 ## Project Maintenance
 - [ ] **Maintenance Consideration**

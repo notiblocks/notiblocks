@@ -1,0 +1,1 @@
+# NotiBlocks Inline Configuration Class
