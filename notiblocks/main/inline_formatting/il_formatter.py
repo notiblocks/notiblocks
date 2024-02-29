@@ -5,7 +5,7 @@ from ..ansi import ANSI
 from ..enums.colors.fgcolors import FGColors
 from ..constants import RESET_STYLE
 
-DEFAULT_COLOR = "none"
+DEFAULT_COLOR = None
 
 class ILFormatter:
     """
@@ -23,10 +23,10 @@ class ILFormatter:
         pass
 
     # Private method for conversion between ilconfig and string
-    def __convert_formats(inline_configurations: list) -> str:
+    def convert_formats(inline_configurations: list) -> str:
         out = ""
         for element in inline_configurations:
-            if element.color == none:
+            if element.color == None:
                 out += f"{RESET_STYLE}{element.text}"
             else:
                 out += f"{ANSI.color_text(FGColors[element.color].value)}{element.text}"
@@ -40,11 +40,14 @@ class ILFormatter:
         message_args = message.split('$')
         inline_configurations = [] # holder for the configuration classes
 
+        configuration_args = 0
+
         # Define the configurations
         for i in range(0, len(message_args)):
             if i % 2 != 0:
-                inline_configurations[i] = ILConfig(message_args[i], args[i].color.lower())
+                inline_configurations.append(ILConfig(message_args[i], args[configuration_args].lower()))
+                configuration_args += 1
             else:
-                inline_configurations[i] = ILConfig(message_args[i], DEFAULT_COLOR)
+                inline_configurations.append(ILConfig(message_args[i], DEFAULT_COLOR))
 
-        return __convert_formats(inline_configurations)
+        return ILFormatter.convert_formats(inline_configurations)
