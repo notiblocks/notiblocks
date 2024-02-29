@@ -3,6 +3,7 @@ from il_config import ILConfig
 
 from ..ansi import ANSI
 from .enums.colors.fgcolors import FGColors
+from ..constants import RESET_STYLE
 
 DEFAULT_COLOR = "none"
 
@@ -21,10 +22,19 @@ class ILFormatter:
     def __init__ ():
         pass
 
+    # Private method for conversion between ilconfig and string
     def __convert_formats(inline_configurations: list) -> str:
-        pass
-        
+        out = ""
+        for element in inline_configurations:
+            if element.color == none:
+                out += f"{RESET_STYLE}{element.text}"
+            else:
+                out += f"{ANSI.color_text(FGColors[element.color].value)}{element.text}"
 
+        return out
+
+        
+    @staticmethod
     def format(self, message: str, args: list) -> str:
 
         message_args = message.split('$')

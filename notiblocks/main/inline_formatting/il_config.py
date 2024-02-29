@@ -5,7 +5,7 @@ class ILConfig:
     ILConfig is a configuration class for the in-line formatting tool "ILFormatter".
     For the current version it supports only color formatting.
     """
-    def __init__ (self, color: str, text: str):
+    def __init__ (self, text: str, color: str):
         self._color = color
         self._text = text
 
