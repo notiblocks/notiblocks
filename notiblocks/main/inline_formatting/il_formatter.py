@@ -1,8 +1,8 @@
 # Inline formatter class, wrapper of the il_config
-from il_config import ILConfig
+from .il_config import ILConfig
 
 from ..ansi import ANSI
-from .enums.colors.fgcolors import FGColors
+from ..enums.colors.fgcolors import FGColors
 from ..constants import RESET_STYLE
 
 DEFAULT_COLOR = "none"
@@ -35,7 +35,7 @@ class ILFormatter:
 
         
     @staticmethod
-    def format(self, message: str, args: list) -> str:
+    def format(message: str, args: list) -> str:
 
         message_args = message.split('$')
         inline_configurations = [] # holder for the configuration classes
