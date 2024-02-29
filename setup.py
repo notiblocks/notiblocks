@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
-VERSION = '0.0.1'
+VERSION = '0.0.3'
 DESCRIPTION = 'Logging library for the impatient'
-LONG_DESCRIPTION = 'A package that allows to log colorful messages on the terminal.'
+LONG_DESCRIPTION = 'Easy way to make your terminal logs more colorful.'
 
 # Setting up
 setup(
