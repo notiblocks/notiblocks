@@ -22,14 +22,9 @@ def main():
 
     nb_handler = NBHandler(nb_conf)
 
-    # TODO: Implement the ILConfig and the ILFormatter classes
-    il_config = ILConfig(
-        color="red"
-    )
+    # You could even format things inline
+    print(nb_handler.success(ILFormatter.format("This is a $TEST$ successful message", ["red"])))
 
-    il_formatter = ILFormatter()
-
-    print(nb_handler.success(il_formatter.format("This is a $TEST$ successful message", [il_config])))
     print(nb_handler.fail("And this is a failed message"))
     print(nb_handler.warn("But this is a warning message"))
     print(nb_handler.log("This is a logged message."))
