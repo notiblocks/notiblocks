@@ -83,15 +83,8 @@ print(nb_handler.log("User {} accessed this page", page.user))
 ```
 
 ## Contributing
-We welcome contributions from the community to help improve Notiblocks. If you'd like to contribute, please follow these guidelines:
-
-* Fork the repository and clone it to your local machine.
-* Create a new branch for your feature or bug fix: `git checkout -b feature/my-feature or git checkout -b bugfix/issue-123`.
-* Make your changes and test thoroughly.
-* Commit your changes with descriptive commit messages: `git commit -m "Brief description of your changes"`.
-* Push to your branch: git push origin feature/my-feature.
-* Open a pull request to the main branch and provide a detailed description of your changes.
-* We appreciate your contributions, whether they're bug fixes, documentation improvements, or new features!
+The notiblocks team would be more than happy to see your code suggestions. If you want to help out in some way - you could!
+* **We wellcome feature ideas!** - If you want to see something in the project, that **you** think would be usable and would make your life easier, open a discussion, issue or even implement it! Before commiting, though, check the [`contribution guidelines`](/CONTRIBUTING.md) :)
 
 ## License
 Notiblocks is licensed under the MIT License, check [`LICENSE`](/LICENSE) for more information.
