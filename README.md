@@ -17,6 +17,9 @@ Quick and easy customizable terminal logs for your application.
 
 Welcome to Notiblocks, a versatile Python library designed to enhance terminal logging with customizable and intuitive features.
 
+
+### Documentation
+If you want to **learn** how to use `notiblocks`, check the [`documentation`](https://app.gitbook.com/o/4FBvhI5UXLbq0HL9OCTS/s/z6b70RGC8WhxZqoCAV0k/)
 ### What is Notiblocks?
 
 Notiblocks is more than just a logging library; it's a powerful tool that simplifies and elevates your terminal logging experience. It offers a user-friendly interface for creating custom, eye-catching logs, allowing developers to seamlessly integrate informative and visually appealing messages into their applications.
