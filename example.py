@@ -4,7 +4,6 @@ import random
 from notiblocks.notiblocks import NBConfig
 from notiblocks.notiblocks import NBHandler
 
-from notiblocks.notiblocks import ILConfig
 from notiblocks.notiblocks import ILFormatter
 
 def main():

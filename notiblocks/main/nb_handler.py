@@ -4,6 +4,7 @@ from .enums.brackets import Brackets
 from .enums.nb_inline import NBInline
 
 from .error.invalid_format_error import InvalidFormatError
+from .error.invalid_operation_type_error import InvalidOperationTypeError
 
 from .enums.colors.bgcolors import BGColors
 from .enums.colors.fgcolors import FGColors
@@ -17,6 +18,8 @@ from .ansi import ANSI
 import time
 from datetime import datetime
 import time
+
+import yaml
 
 class NBHandler:
     
@@ -35,47 +38,76 @@ class NBHandler:
         else:
             self.configuration = configuration
 
-    def success(self, message) -> str: 
-        bracket_sign = self.configuration._success_bracket_sign if self.configuration._success_bracket_sign is not None else self.configuration._bracket_style
+        self.metainfo = self.get_app_version("../meta.yaml")            
+        self.version = self.metainfo.get('notiblocks', {}).get('release', {}).get('version', None)
+
+
+    def get_app_version(self, path: str) -> str:
+        
+        with open(path, 'r') as file:
+            try:
+                data = yaml.safe_load(file)
+                return data
+            except yaml.YAMLError as e:
+                print(e)
+                return None
+
+
+    def handle_operation(self, message: str, operation_type: str) -> str:
+        operation_type = operation_type.lower().strip()
+
+        bracket_sign = ""
+        color_attr = ""
+        sign_color_attr = ""
+        bracket_color_attr = ""
+        sign_attr = ""
+        background_color_attr = ""
+
+        if operation_type == "success":
+            bracket_sign = self.configuration._success_bracket_sign if self.configuration._success_bracket_sign is not None else self.configuration._bracket_style
+            color_attr = self.configuration._success_color
+            sign_color_attr = self.configuration._success_sign_color
+            bracket_color_attr = self.configuration._success_bracket_color
+            sign_attr = self.configuration._success_sign
+            background_color_attr = self.configuration._success_background_color
+        elif operation_type == "warn":
+            bracket_sign = self.configuration._warn_bracket_sign if self.configuration._warn_bracket_sign is not None else self.configuration._bracket_style
+            color_attr = self.configuration._warn_color
+            sign_color_attr = self.configuration._warn_sign_color
+            bracket_color_attr = self.configuration._warn_bracket_color
+            sign_attr = self.configuration._warn_sign
+            background_color_attr = self.configuration._warn_background_color
+        elif operation_type == "fail":
+            bracket_sign = self.configuration._fail_bracket_sign if self.configuration._fail_bracket_sign is not None else self.configuration._bracket_style
+            color_attr = self.configuration._fail_color
+            sign_color_attr = self.configuration._fail_sign_color
+            bracket_color_attr = self.configuration._fail_bracket_color
+            sign_attr = self.configuration._fail_sign
+            background_color_attr = self.configuration._fail_background_color
+        else:
+            raise InvalidOperationTypeError(f"This operation is not supported in the current version of notiblocks: {version}")
 
         try:
-            return self.format_message( self.configuration._success_color,
-                                        self.configuration._success_sign_color,
-                                        self.configuration._success_bracket_color,
-                                        self.configuration._success_sign, 
-                                        self.configuration._success_background_color,
-                                        bracket_t=bracket_sign,
-                                        message=message)
+            return self.format_message(
+                color_attr,
+                sign_color_attr,
+                bracket_color_attr,
+                sign_attr,
+                background_color_attr,
+                bracket_t=bracket_sign,
+                message=message
+            )
         except InvalidFormatError as ie:
             print(ie)
 
-    def warn(self, message) -> str:
-        bracket_sign = self.configuration._warn_bracket_sign if self.configuration._warn_bracket_sign is not None else self.configuration._bracket_style
+    def success(self, message: str) -> str:
+        return self.handle_operation(message, "success")
 
-        try:
-            return self.format_message( self.configuration._warn_color,
-                                        self.configuration._warn_sign_color,
-                                        self.configuration._warn_bracket_color,
-                                        self.configuration._warn_sign,
-                                        self.configuration._warn_background_color,
-                                        bracket_t=bracket_sign,
-                                        message=message)
-        except InvalidFormatError as ie:
-            print(ie)
+    def warn(self, message: str) -> str:
+        return self.handle_operation(message, "warn")
 
-    def fail(self, message) -> str:
-        bracket_sign = self.configuration._fail_bracket_sign if self.configuration._fail_bracket_sign is not None else self.configuration._bracket_style
-
-        try:
-            return self.format_message( self.configuration._fail_color,
-                                        self.configuration._fail_sign_color,
-                                        self.configuration._fail_bracket_color,
-                                        self.configuration._fail_sign, 
-                                        self.configuration._fail_background_color,
-                                        bracket_t=bracket_sign,
-                                        message=message)
-        except InvalidFormatError as ie:
-            print(ie)
+    def fail(self, message: str) -> str:
+        return self.handle_operation(message, "fail")
 
     def log(self, message) -> str:
         out = ""
