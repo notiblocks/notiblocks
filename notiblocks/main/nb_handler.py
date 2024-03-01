@@ -21,8 +21,11 @@ import time
 class NBHandler:
     
     """
-    NB Handler class..
-    Document that shi
+    NBHandler is a class, that wraps the NBConfig. It provides the main functionality, such as:
+    * `.success(message)` - Prints a successful message on the console
+    * `.fail(message)` - Prints a failure message on the console
+    * `.warn(message)` - Prints a warning message on the console
+    * `.log(message)` - Prints a log on the console, providing you the functionallity to define custom date before it.
     """
          
     def __init__(self, configuration: NBConfig):
