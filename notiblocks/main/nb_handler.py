@@ -1,9 +1,8 @@
 from .nb_config import NBConfig
 from .enums.brackets import Brackets
 
-from .enums.nb_inline import NBInline
-
 from .error.invalid_format_error import InvalidFormatError
+from .error.invalid_operation_type_error import InvalidOperationTypeError
 
 from .enums.colors.bgcolors import BGColors
 from .enums.colors.fgcolors import FGColors
@@ -12,19 +11,27 @@ from .constants import RESET_STYLE
 
 from .enums.timestampformat import TimeStampFormats
 
-from .posholder import PosHolder
-
 from .ansi import ANSI
+
+from pathlib import Path
 
 import time
 from datetime import datetime
 import time
 
+import yaml
+
+script_dir = Path(__file__).resolve().parent
+meta_path = script_dir / ".." / "meta.yaml"
+
 class NBHandler:
     
     """
-    NB Handler class..
-    Document that shi
+    NBHandler is a class, that wraps the NBConfig. It provides the main functionality, such as:
+    * `.success(message)` - Prints a successful message on the console
+    * `.fail(message)` - Prints a failure message on the console
+    * `.warn(message)` - Prints a warning message on the console
+    * `.log(message)` - Prints a log on the console, providing you the functionallity to define custom date before it.
     """
          
     def __init__(self, configuration: NBConfig):
@@ -34,49 +41,77 @@ class NBHandler:
         else:
             self.configuration = configuration
 
-    def success(self, message) -> str: 
-        bracket_sign = self.configuration._success_bracket_sign if self.configuration._success_bracket_sign is not None else self.configuration._bracket_style
+        self.metainfo = self.get_app_version(meta_path)  
+        self.version = self.metainfo.get('notiblocks', {}).get('release', {}).get('version', None)
+
+
+    def get_app_version(self, path: str) -> str:
+
+        with open(path, 'r') as file:
+            try:
+                data = yaml.safe_load(file)
+                return data
+            except yaml.YAMLError as e:
+                print(e)
+                return None
+
+    def handle_operation(self, message: str, operation_type: str) -> str:
+        operation_type = operation_type.lower().strip()
+
+        bracket_sign = ""
+        color_attr = ""
+        sign_color_attr = ""
+        bracket_color_attr = ""
+        sign_attr = ""
+        background_color_attr = ""
+
+        if operation_type == "success":
+            bracket_sign = self.configuration._success_bracket_sign if self.configuration._success_bracket_sign is not None else self.configuration._bracket_style
+            color_attr = self.configuration._success_color
+            sign_color_attr = self.configuration._success_sign_color
+            bracket_color_attr = self.configuration._success_bracket_color
+            sign_attr = self.configuration._success_sign
+            background_color_attr = self.configuration._success_background_color
+        elif operation_type == "warn":
+            bracket_sign = self.configuration._warn_bracket_sign if self.configuration._warn_bracket_sign is not None else self.configuration._bracket_style
+            color_attr = self.configuration._warn_color
+            sign_color_attr = self.configuration._warn_sign_color
+            bracket_color_attr = self.configuration._warn_bracket_color
+            sign_attr = self.configuration._warn_sign
+            background_color_attr = self.configuration._warn_background_color
+        elif operation_type == "fail":
+            bracket_sign = self.configuration._fail_bracket_sign if self.configuration._fail_bracket_sign is not None else self.configuration._bracket_style
+            color_attr = self.configuration._fail_color
+            sign_color_attr = self.configuration._fail_sign_color
+            bracket_color_attr = self.configuration._fail_bracket_color
+            sign_attr = self.configuration._fail_sign
+            background_color_attr = self.configuration._fail_background_color
+        else:
+            raise InvalidOperationTypeError(f"This operation is not supported in the current version of notiblocks: {self.version}")
 
         try:
-            return self.format_message( self.configuration._success_color,
-                                        self.configuration._success_sign_color,
-                                        self.configuration._success_bracket_color,
-                                        self.configuration._success_sign, 
-                                        self.configuration._success_background_color,
-                                        bracket_t=bracket_sign,
-                                        message=message)
+            return self.format_message(
+                color_attr,
+                sign_color_attr,
+                bracket_color_attr,
+                sign_attr,
+                background_color_attr,
+                bracket_t=bracket_sign,
+                message=message
+            )
         except InvalidFormatError as ie:
             print(ie)
 
-    def warn(self, message) -> str:
-        bracket_sign = self.configuration._warn_bracket_sign if self.configuration._warn_bracket_sign is not None else self.configuration._bracket_style
+    def success(self, message: str) -> str:
+        return self.handle_operation(message, "success")
 
-        try:
-            return self.format_message( self.configuration._warn_color,
-                                        self.configuration._warn_sign_color,
-                                        self.configuration._warn_bracket_color,
-                                        self.configuration._warn_sign,
-                                        self.configuration._warn_background_color,
-                                        bracket_t=bracket_sign,
-                                        message=message)
-        except InvalidFormatError as ie:
-            print(ie)
+    def warn(self, message: str) -> str:
+        return self.handle_operation(message, "warn")
 
-    def fail(self, message) -> str:
-        bracket_sign = self.configuration._fail_bracket_sign if self.configuration._fail_bracket_sign is not None else self.configuration._bracket_style
+    def fail(self, message: str) -> str:
+        return self.handle_operation(message, "fail")
 
-        try:
-            return self.format_message( self.configuration._fail_color,
-                                        self.configuration._fail_sign_color,
-                                        self.configuration._fail_bracket_color,
-                                        self.configuration._fail_sign, 
-                                        self.configuration._fail_background_color,
-                                        bracket_t=bracket_sign,
-                                        message=message)
-        except InvalidFormatError as ie:
-            print(ie)
-
-    def log(self, message) -> str:
+    def log(self, message: str) -> str:
         out = ""
         current_time = time.time()
         date_time = datetime.fromtimestamp(current_time)
@@ -113,7 +148,7 @@ class NBHandler:
                 opening_bracket = tokens[0].strip()
                 closing_bracket = tokens[1].strip()
             else:
-                raise InvalidFormatError("Invalud bracket type!")
+                raise InvalidFormatError(f"The bracket type you have provided is not present in the current version of notiblocks: {self.version}")
 
         background_color_value = None
         time_stamp_value = None
@@ -145,7 +180,7 @@ class NBHandler:
                 try:
                     date_time.strftime(time_stamp_as_string)
                 except:
-                    raise InvalidFormatError("The provided date time format is invalid")
+                    raise InvalidFormatError(f"The provided date time format is not present in the current version of notiblocks: {self.version}")
 
             if not background_color is None:
                 background_color_value = BGColors[background_color].value
@@ -156,69 +191,11 @@ class NBHandler:
 
             return out
         else:
-            raise InvalidFormatError("Invalid time format")
+            raise InvalidFormatError(f"The provided time format is not present in the current version of notiblocks: {self.version}")
 
 
-    def format_message(self, text_c, sign_c, bracket_c, sign, background_c, bracket_t, message):
+    def format_message(self, text_c: str, sign_c: str, bracket_c: str, sign: str, background_c: str, bracket_t: str, message: str) -> str:
         out = ""
-
-        # TODO: line parsing?
-
-        # @{%RESET%}
-        has_format = False
-        message_ptr = 0
-        format_contents = []
-        while message_ptr < len(message):
-            if message[message_ptr] == '@' and message[message_ptr + 1] == '{' and message[message_ptr + 2] == '%':
-                has_format = True
-                format_holder = PosHolder()
-                format_holder.format_type = ""
-                format_holder.start_pos = message_ptr
-                format_holder.end_pos = 0
-                
-                message_ptr += 3 # move to the block after the iterator
-
-                while message[message_ptr] != '%' and message[message_ptr + 1] != '}': # We hit a pass
-                    format_holder.format_type += message[message_ptr]
-                    message_ptr += 1
-
-                message_ptr += 1
-                format_holder.end_pos = message_ptr
-                format_contents.append(format_holder)
-            else: # No expression, so we move the iterator
-                message_ptr += 1
-
-        # This is a @{%TEST%} message
-        # ['This is a', '@{%TEST%} successful message']
-        
-        if has_format:
-            message_token_pointer = 0
-            message_tokens = message.split("@")
-            formatted_tokens = []
-            for token in message_tokens: # Iterate over all of the message tokens
-                if token[0] == '{' and token[1] == '%': # Check if we are at the right content
-                    current_format = format_contents[message_token_pointer]
-
-                    end_length = current_format.end_pos - current_format.start_pos
-                    token = token[end_length::]
-                    message_token_pointer += 1    
-
-                    # TODO: Apply the format
-                    # 1. Create a new ANSI object
-                    # 2. Find the formating that is needed
-                    # 3. Map and apply the formatting
-                    # 4. Add the format as a string
-                    # 5. put the stirng in the tokens
-
-
-                token = token.strip()
-                formatted_tokens.append(token)
-
-            message = " ".join(formatted_tokens)
-            print(message)
-
-        # TODO: Apply formating where needed
-        # TODO: Add time as a format :D
 
         text_color =        text_c.lower().strip() if text_c is not None else None
         sign_color =        sign_c.lower().strip() if sign_c is not None else None
@@ -250,7 +227,7 @@ class NBHandler:
                 opening_bracket = tokens[0].strip()
                 closing_bracket = tokens[1].strip()
             else:
-                raise InvalidFormatError("Invalud bracket type!")
+                raise InvalidFormatError(f"The provided bracket type is not present in the current version of notiblocks: {self.version}")
 
         background_color_value = None
 
@@ -270,5 +247,3 @@ class NBHandler:
             return out
         else:
             raise InvalidFormatError("Invalid format!")
-            
- 

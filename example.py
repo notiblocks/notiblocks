@@ -4,7 +4,6 @@ import random
 from notiblocks.notiblocks import NBConfig
 from notiblocks.notiblocks import NBHandler
 
-from notiblocks.notiblocks import ILConfig
 from notiblocks.notiblocks import ILFormatter
 
 def main():
@@ -22,7 +21,6 @@ def main():
 
     nb_handler = NBHandler(nb_conf)
 
-    # You could even format things inline
     print(nb_handler.success(ILFormatter.format("This is a $TEST$ successful message", ["red"])))
 
     print(nb_handler.fail("And this is a failed message"))
