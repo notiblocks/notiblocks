@@ -85,7 +85,7 @@ print(nb_handler.success(ILFormatter.format("This is a $TEST$ successful message
 
 print(nb_handler.fail("Notiblocks is still not in a finished state..."))
 print(nb_handler.warn("You haven't smiled enough today :)"))
-print(nb_handler.log("User {} accessed this page", page.user))
+print(nb_handler.log(f"User {page.user} accessed this page"))
 ```
 
 ## Contributing
