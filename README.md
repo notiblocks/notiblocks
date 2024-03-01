@@ -62,11 +62,13 @@ Notiblocks uses `NBConfig` and `NBHandler` objects, which let you customize your
 
 * **`NBConfig`**: Holds the information about how your logs will look. You can override the information trough the constructor, or through the setters. For further explanation check the [`docs`](/docs/documented/nbconfig.md).
 * **NBHandler**: Wrapper class for the `NBConfig`, which provides the main functionalities as `success`, `fail`, `warn` and `log`. For further information check the [`docs`](/docs/documented/nbhandler.md).
+* **ILFormatter**: Let's you create custom inline formatting using the `$` sign and providing the configuration as a list. For more brief look, check the [`docs`](/docs/documented/ilformatter.md)
 
 Example:
 ```python
 from notiblocks import NBConfig, NBHandler
-    
+from notiblocks import ILFormatter
+
 nb_conf = NBConfig(
     success_sign_color="blue",
     time_sign_color="GrEEn",
@@ -79,7 +81,8 @@ nb_conf = NBConfig(
 
 nb_handler = NBHandler(nb_conf)
 
-print(nb_handler.success("Notiblocks is cool."))
+print(nb_handler.success(ILFormatter.format("This is a $TEST$ successful message", ["red"])))
+
 print(nb_handler.fail("Notiblocks is still not in a finished state..."))
 print(nb_handler.warn("You haven't smiled enough today :)"))
 print(nb_handler.log("User {} accessed this page", page.user))
