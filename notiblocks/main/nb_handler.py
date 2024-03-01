@@ -12,8 +12,6 @@ from .constants import RESET_STYLE
 
 from .enums.timestampformat import TimeStampFormats
 
-from .posholder import PosHolder
-
 from .ansi import ANSI
 
 import time
@@ -161,64 +159,6 @@ class NBHandler:
 
     def format_message(self, text_c, sign_c, bracket_c, sign, background_c, bracket_t, message):
         out = ""
-
-        # TODO: line parsing?
-
-        # @{%RESET%}
-        has_format = False
-        message_ptr = 0
-        format_contents = []
-        while message_ptr < len(message):
-            if message[message_ptr] == '@' and message[message_ptr + 1] == '{' and message[message_ptr + 2] == '%':
-                has_format = True
-                format_holder = PosHolder()
-                format_holder.format_type = ""
-                format_holder.start_pos = message_ptr
-                format_holder.end_pos = 0
-                
-                message_ptr += 3 # move to the block after the iterator
-
-                while message[message_ptr] != '%' and message[message_ptr + 1] != '}': # We hit a pass
-                    format_holder.format_type += message[message_ptr]
-                    message_ptr += 1
-
-                message_ptr += 1
-                format_holder.end_pos = message_ptr
-                format_contents.append(format_holder)
-            else: # No expression, so we move the iterator
-                message_ptr += 1
-
-        # This is a @{%TEST%} message
-        # ['This is a', '@{%TEST%} successful message']
-        
-        if has_format:
-            message_token_pointer = 0
-            message_tokens = message.split("@")
-            formatted_tokens = []
-            for token in message_tokens: # Iterate over all of the message tokens
-                if token[0] == '{' and token[1] == '%': # Check if we are at the right content
-                    current_format = format_contents[message_token_pointer]
-
-                    end_length = current_format.end_pos - current_format.start_pos
-                    token = token[end_length::]
-                    message_token_pointer += 1    
-
-                    # TODO: Apply the format
-                    # 1. Create a new ANSI object
-                    # 2. Find the formating that is needed
-                    # 3. Map and apply the formatting
-                    # 4. Add the format as a string
-                    # 5. put the stirng in the tokens
-
-
-                token = token.strip()
-                formatted_tokens.append(token)
-
-            message = " ".join(formatted_tokens)
-            print(message)
-
-        # TODO: Apply formating where needed
-        # TODO: Add time as a format :D
 
         text_color =        text_c.lower().strip() if text_c is not None else None
         sign_color =        sign_c.lower().strip() if sign_c is not None else None
