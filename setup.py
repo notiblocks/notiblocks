@@ -21,7 +21,7 @@ setup(
     packages=find_packages(),
     install_requires=[],
     keywords=['python', 'logging', 'warning', 'terminal', 'ansi', 'color'],
-    classifiers=[,
+    classifiers=[
         "Intended Audience :: Developers",
         "Programming Language :: Python :: 3",
         "Operating System :: Unix",
