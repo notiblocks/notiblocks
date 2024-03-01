@@ -1,8 +1,6 @@
 from .nb_config import NBConfig
 from .enums.brackets import Brackets
 
-from .enums.nb_inline import NBInline
-
 from .error.invalid_format_error import InvalidFormatError
 from .error.invalid_operation_type_error import InvalidOperationTypeError
 
@@ -15,11 +13,16 @@ from .enums.timestampformat import TimeStampFormats
 
 from .ansi import ANSI
 
+from pathlib import Path
+
 import time
 from datetime import datetime
 import time
 
 import yaml
+
+script_dir = Path(__file__).resolve().parent
+meta_path = script_dir / ".." / "meta.yaml"
 
 class NBHandler:
     
@@ -38,12 +41,12 @@ class NBHandler:
         else:
             self.configuration = configuration
 
-        self.metainfo = self.get_app_version("../meta.yaml")            
+        self.metainfo = self.get_app_version(meta_path)  
         self.version = self.metainfo.get('notiblocks', {}).get('release', {}).get('version', None)
 
 
     def get_app_version(self, path: str) -> str:
-        
+
         with open(path, 'r') as file:
             try:
                 data = yaml.safe_load(file)
@@ -51,7 +54,6 @@ class NBHandler:
             except yaml.YAMLError as e:
                 print(e)
                 return None
-
 
     def handle_operation(self, message: str, operation_type: str) -> str:
         operation_type = operation_type.lower().strip()
@@ -85,7 +87,7 @@ class NBHandler:
             sign_attr = self.configuration._fail_sign
             background_color_attr = self.configuration._fail_background_color
         else:
-            raise InvalidOperationTypeError(f"This operation is not supported in the current version of notiblocks: {version}")
+            raise InvalidOperationTypeError(f"This operation is not supported in the current version of notiblocks: {self.version}")
 
         try:
             return self.format_message(
@@ -109,7 +111,7 @@ class NBHandler:
     def fail(self, message: str) -> str:
         return self.handle_operation(message, "fail")
 
-    def log(self, message) -> str:
+    def log(self, message: str) -> str:
         out = ""
         current_time = time.time()
         date_time = datetime.fromtimestamp(current_time)
@@ -146,7 +148,7 @@ class NBHandler:
                 opening_bracket = tokens[0].strip()
                 closing_bracket = tokens[1].strip()
             else:
-                raise InvalidFormatError("Invalud bracket type!")
+                raise InvalidFormatError(f"The bracket type you have provided is not present in the current version of notiblocks: {self.version}")
 
         background_color_value = None
         time_stamp_value = None
@@ -178,7 +180,7 @@ class NBHandler:
                 try:
                     date_time.strftime(time_stamp_as_string)
                 except:
-                    raise InvalidFormatError("The provided date time format is invalid")
+                    raise InvalidFormatError(f"The provided date time format is not present in the current version of notiblocks: {self.version}")
 
             if not background_color is None:
                 background_color_value = BGColors[background_color].value
@@ -189,10 +191,10 @@ class NBHandler:
 
             return out
         else:
-            raise InvalidFormatError("Invalid time format")
+            raise InvalidFormatError(f"The provided time format is not present in the current version of notiblocks: {self.version}")
 
 
-    def format_message(self, text_c, sign_c, bracket_c, sign, background_c, bracket_t, message):
+    def format_message(self, text_c: str, sign_c: str, bracket_c: str, sign: str, background_c: str, bracket_t: str, message: str) -> str:
         out = ""
 
         text_color =        text_c.lower().strip() if text_c is not None else None
@@ -225,7 +227,7 @@ class NBHandler:
                 opening_bracket = tokens[0].strip()
                 closing_bracket = tokens[1].strip()
             else:
-                raise InvalidFormatError("Invalud bracket type!")
+                raise InvalidFormatError(f"The provided bracket type is not present in the current version of notiblocks: {self.version}")
 
         background_color_value = None
 
