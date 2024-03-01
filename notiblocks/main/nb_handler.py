@@ -247,5 +247,3 @@ class NBHandler:
             return out
         else:
             raise InvalidFormatError("Invalid format!")
-            
- 
