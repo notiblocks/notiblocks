@@ -1,6 +1,6 @@
 from enum import Enum
 
-from ...constants import *
+from ..._constants import *
 
 class BGColors(Enum):
     """
