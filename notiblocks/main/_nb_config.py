@@ -1,4 +1,4 @@
-from .constants import *
+from ._constants import *
 
 class NBConfig:
     """

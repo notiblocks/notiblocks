@@ -1,9 +1,9 @@
 # Inline formatter class, wrapper of the il_config
-from .il_config import ILConfig
+from ._il_config import ILConfig
 
-from ..ansi import ANSI
-from ..enums.colors.fgcolors import FGColors
-from ..constants import RESET_STYLE
+from .._ansi import ANSI
+from ..enums.colors._fgcolors import FGColors
+from .._constants import RESET_STYLE
 
 DEFAULT_COLOR = None
 

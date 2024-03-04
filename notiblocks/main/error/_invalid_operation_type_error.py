@@ -1,5 +1,5 @@
-from ..ansi import ANSI
-from ..constants import *
+from .._ansi import ANSI
+from .._constants import *
 
 class InvalidOperationTypeError(RuntimeError):
     """
