@@ -11,6 +11,10 @@ class Logger:
 
         # TODO: add the four types of logging here
 
+    # TODO: more data?
+    def __repr__(self):
+        return "<notiblocks.logger>"
+
     @staticmethod
     def log(message: str, sign: str):
         if sign.trim() == '':
