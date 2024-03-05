@@ -1,4 +1,7 @@
 # Logger utility for notiblocks
+
+DEFAULT_LOGGER_SIGN = '[+]'
+
 class Logger:
     """
     Logger utility for notiblocks, it provides a simple inline logging functionality.
@@ -8,10 +11,10 @@ class Logger:
 
         # TODO: add the four types of logging here
 
-
+    @staticmethod
     def log(message: str, sign: str):
         if sign.trim() == '':
-            sign = '[+]'
+            sign = DEFAULT_LOGGER_SIGN
 
         if message.trim == '':
             pass # TODO: Throw and handle an exception
