@@ -5,6 +5,8 @@ from ._nb_config import NBConfig
 
 from enum import Enum
 
+from ._error import InvalidSignError
+
 DEFAULT_LOGGER_SIGN = '[+]'
 
 class NBLogLevel(Enum):
@@ -50,7 +52,7 @@ class Logger:
             sign = DEFAULT_LOGGER_SIGN # TODO: Format the sign trough the nbconfig
 
         if message.trim == '':
-            pass # TODO: Throw and handle an exception
+            raise InvalidMessageError("The message could not be empty!")
 
         # Check the level types
         if level.trim().lower() == "success":
