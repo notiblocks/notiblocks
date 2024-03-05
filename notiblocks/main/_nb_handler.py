@@ -1,8 +1,8 @@
 from ._nb_config import NBConfig
 from .enums._brackets import Brackets
 
-from .error._invalid_format_error import InvalidFormatError
-from .error._invalid_operation_type_error import InvalidOperationTypeError
+from ._error import InvalidFormatError
+from ._error import InvalidOperationTypeError
 
 from .enums.colors._bgcolors import BGColors
 from .enums.colors._fgcolors import FGColors
