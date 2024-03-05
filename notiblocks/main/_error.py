@@ -19,3 +19,7 @@ class InvalidFormatError(NBError, RuntimeError):
 class InvalidOperationTypeError(NBError, RuntimeError):
     def __str__(self) -> str:
         return f"{ANSI.background(BG_RED)}{ANSI.color_text(FG_YELLOW)}[{ANSI.color_text(FG_WHITE)}EXCEPTION{ANSI.color_text(FG_YELLOW)}]{ANSI.color_text(FG_WHITE)}{self._message}{RESET_STYLE}"
+
+class InvalidMessageError(NBError, RuntimeError):
+    def __str__(self) -> str:
+        return f"{ANSI.background(BG_RED)}{ANSI.color_text(FG_YELLOW)}[{ANSI.color_text(FG_WHITE)}EXCEPTION{ANSI.color_text(FG_YELLOW)}]{ANSI.color_text(FG_WHITE)}{self._message}{RESET_STYLE}"
